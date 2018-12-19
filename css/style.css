@@ -720,3 +720,7 @@ img, img.scale-with-grid { outline: 0; max-width: 100%; height: auto; }
   color: #00565E;
   font-weight: bold;
 }
+
+.parser:after {
+  content: attr(data-name) "@" attr(data-domain) "." attr(data-tld); 
+}
