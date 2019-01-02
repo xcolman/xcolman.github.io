@@ -1,0 +1,83 @@
+---
+permalink: /404.html
+---
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+	<meta http-equiv="refresh" content="5;url=http://www.colmanleung.com/" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Colman Leung's Homepage - 404 not found!</title>
+
+    <!-- favicon -->
+    <link href="favicon.png" rel=icon>
+
+    <!-- web-fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Hind:300,400,500,600,700" rel="stylesheet">
+
+    <!-- font-awesome -->
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Style CSS -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body id="page-top" data-spy="scroll" data-target=".navbar">
+<div id="main-wrapper">
+<!-- Page Preloader -->
+<div class="blocks">
+
+<section class="section-wrapper section-education">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <div class="section-title"><h2>There's nothing here... or is there?</h2></div>
+				<!-- 
+				OK here are some things that I like:
+				I like blue color, you can find it in my web site and many of my designs. I usually use yellow and green (along with white and black) to complement.
+				I really like to play computer games too, especially those about resources management, such as Caesar, Pharaoh & Cleopatra, Sim City, Sim Theme Parks, Theme Hospital, Factorio, Cities Skyline, and the Anno series, etc. 
+				I wonder if anyone is going to read this. Honestly, send me an email if you find this ;)-->
+            </div>
+        </div>
+        <!--.row-->
+        <div class="row">
+            <div class="col">
+			<a href="colmanleung.com">Redirecting to my homepage... or click here if you do not want to waste <span id="timer">5</span> second(s) of your life.</a>
+			</div>
+        </div>
+        <!--.row-->
+    </div>
+    <!-- .container-fluid -->
+
+</section>
+</div>
+<!-- .right-col-block -->
+</div>
+<!-- #main-wrapper -->
+
+<!-- jquery -->
+<script src="js/jquery-2.1.4.min.js"></script>
+<script src="js/responsiveslides.min.js"></script>
+<!-- Bootstrap -->
+<script src="js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    var timeleft = 5;
+    var downloadTimer = setInterval(function(){
+    timeleft--;
+    document.getElementById("timer").textContent = timeleft;
+    if(timeleft <= 0)
+        clearInterval(downloadTimer);
+    },1000);
+</script>
+</body>
+</html>
