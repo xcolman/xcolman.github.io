@@ -38,6 +38,14 @@ jQuery(function ($) {
 			$.magnificPopup.close();
 	});
 	
+	
+	/*----------------------------------------------------*/
+	/*	Lazy image loading
+	------------------------------------------------------*/
+	
+	const observer = lozad();
+	observer.observe();
+
 	/*----------------------------------------------------*/
 	/*	Smooth Scrolling
 	------------------------------------------------------*/
@@ -82,5 +90,6 @@ jQuery(function ($) {
 			after: function(){}     // Function: After callback
 		});
 	});
+	
 
 }); // JQuery end
