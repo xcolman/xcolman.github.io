@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<!--
+  Psychology Survey Box Highlight Animation
+  Ho Man Colman Leung, The Chinese University of Hong Kong
+  27-9-2019
+-->
+<html lang="en">
+<head>
+<title>Psychology Survey</title>
+<!-- Survey Script -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript">
+///////////////////////////////////////
+// adjust these settings accordingly //
+///////////////////////////////////////
+
+// the question
+var question = '請評估<strong>在另一位參加者眼中，你是個怎樣的人</strong>。請選出最能描述此刻你覺得他對你的看法。依照你的感受報告即可。';
+
+// the list of words (in the order of the questionnaire)
+var words = ['遲鈍','盲從','客氣','認真','計較','友善','無情','刻薄','善良','矛盾','沉著','自信','軟弱','體貼','風度','退縮','親切','坦誠','虛假','抑壓','聰慧','自私','謹慎','冷淡'];
+
+// the score of each word for tie-breaker 
+// higher = more important, each score has to be unique (no duplicates)
+var wordsWeight = [17, 2, 1, 10, 18, 4, 19, 24, 6, 13, 7, 22, 21, 12, 5, 16, 20, 11, 14, 8, 23, 9, 3, 15];
+
+// the order of words shown 
+// (in the following order, assuming default 6 x 4)
+//  1   2   3   4   ...   6
+//  7  ...               12
+// ...                  ...
+//  19 ...               24
+
+var wordsOrder = [8, 2, 24, 17, 7, 3, 5, 4, 22, 13, 12, 10, 14, 9, 21, 1, 6, 15, 11, 23, 19, 18, 16, 20];
+
+// number of words to be highlighted
+var highlightCount = 12;
+
+// number of boxes horizontally x number of boxes vertically
+var boxDim = [6, 4]; // default [6, 4] (6 x 4)
+
+// size of each box
+var boxWidth = 120; 
+
+// font size inside the box
+var fontSize = 30;
+
+// time adjustment
+var timeFade = 1000; // amount of time used to fade in/out (in ms, i.e., 1000 = 1s)
+var timeStay = 2000; // amount of time staying in highlight state
+
+// color adjustment
+var colorBackground = '#515151';
+var colorBox = '#e3e3e3';
+var colorHighlight = '#db5f51';
+var colorFont = '#000000';
+
+
+///////////////////////////////////////////////////////////////////////////////
+// do not change anything below this line unless you know what you are doing //
+///////////////////////////////////////////////////////////////////////////////
+var windowWidth = $(window).width();
+var windowHeight = $(window).height();
+
+// calculate box size
+var boxMarginX = (windowWidth - boxWidth * boxDim[0]) / (2 * (boxDim[0] + 1));
+var boxMarginY = (windowHeight - boxWidth * boxDim[1]) / (2 * (boxDim[1] + 1));
+
+
+// Create our stylesheet
+var style = document.createElement('style');
+style.innerHTML =
+	'.aniContainer{' + 
+	'margin: ' + boxMarginY + 'px ' + boxMarginX + 'px ' + boxMarginY + 'px ' + boxMarginX + 'px;' + 
+	'width: ' + boxWidth + 'px;' + 
+	'height: ' + boxWidth + 'px;' + // we want rectangles, so same dimension
+	'font-size: ' + fontSize + 'px;' +
+	'color: ' + colorFont + ';' + 
+	'-webkit-transition: background-color ' + timeFade + 'ms linear;' + 
+    '-ms-transition: background-color ' + timeFade + 'ms linear;' + 
+    'transition: background-color ' + timeFade + 'ms linear;' + 
+	'}' + 
+	'#animation{' + 
+	'padding: ' + boxMarginY + 'px ' + boxMarginX + 'px ' + boxMarginY + 'px ' + boxMarginX + 'px;' + 
+	'background: ' + colorBackground + ';' + 
+	'}' + 
+	'.boxLowlight{' + 
+	'background: ' + colorBox + ';' + 
+	'}' +
+	'.boxHightlight{' + 
+	'background: ' + colorHighlight + ';' + 
+	'}';
+
+// Get the first script tag
+var ref = document.querySelector('script');
+
+// Insert our new styles before the first script tag
+ref.parentNode.insertBefore(style, ref);
+
+var targets = [];
+</script>
+<!-- Meta tags -->
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script>
+addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); }
+</script>
+<!-- Meta tags -->
+<!--stylesheets-->
+<link href="css/style.css" rel='stylesheet' type='text/css' media="all">
+<!--//style sheet end here-->
+<link href="http://fonts.googleapis.com/css?family=Barlow:300,400,500" rel="stylesheet">
+</head>
+<body>
+
+
+<body>
+<!--
+<h1 class="header-w3ls">
+Psychology Survey
+</h1>
+-->
+<br /><br />
+<!-- multistep form -->
+<div class="main-bothside">
+<form name="submit-to-google-sheet" method="post">
+<div class="personal-info">
+<p id="question"></p>
+</div>
+
+<table class="radioTable">
+<col width="3%">
+<col width="20%">
+<col width="11%">
+<col width="11%">
+<col width="11%">
+<col width="11%">
+<col width="11%">
+<col width="11%">
+<col width="11%">
+<tr>
+<th colspan="2" style="text-align:left">我覺得對方眼中的我...</th>
+<th>完全不符合</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th>完全符合</th>
+</tr>
+<script type="text/javascript">
+var i;
+var j;
+for (i = 0; i < words.length; i++) {
+  document.write('<tr>');
+  document.write('<td style="text-align:left">' + (i + 1) + '. </td>');
+  document.write('<td style="text-align:left">' + words[i] + ': </td>');
+  for (j = 0; j < 7; j++){
+	document.write('<td><label class="radio"><input class="form-check-input" type="radio" name="field_' + i + '" value="'+ j + '"></label></td>')
+  }
+  document.write('</tr>');
+}
+</script>
+</table>
+<br />
+<p id="form-error"></p>
+<br />
+<button type="button" onclick="checkRadio(); return false;">Submit</button>
+<!--<button type="button" onclick="resetRadio(); return false;">Reset</button>-->
+<input id="orderPlaceHolder" type="hidden" name="order" value="">
+</form>
+</div>
+
+<div class="copy">
+<p>©2019 Department of Psychology, The Chinese University of Hong Kong. 
+</div>
+
+
+<div id="animation">
+<script type="text/javascript">
+for (i = 0; i < 4; i++) {
+	for(j = 0; j < 6; j++){
+		if(i * 6 + j < words.length){
+			document.write('<div class="aniContainer boxLowlight" id="box_' + (wordsOrder[i * 6 + j] - 1) + '">'+words[wordsOrder[i * 6 + j] - 1] + '</div>');
+		}
+	}
+}
+</script>
+<div>
+
+
+<script type="text/javascript">
+function checkRadio() {
+	var check = true;
+	// make sure all radios are selected
+	$("input:radio").each(function(){
+		var name = $(this).attr("name");
+		if($("input:radio[name="+name+"]:checked").length == 0){
+			$("input:radio[name="+name+"]").closest( "tr" ).css( "background-color", "#ffeaa3" ); // highlight missing
+			check = false;
+		}
+	});
+	
+	if(check){
+		// remove error text (if any)
+		//$("#form-error").html();
+		
+		// step 1: calculate sequence 
+		var sequence = getSequence();
+
+		// write result to debug console
+		var text = "";
+		for(i = 0; i < highlightCount; i++){
+			text = text + words[sequence[i]] + " ";
+		}
+		console.log(text);
+		// put the text into a placeholder inside the form
+		$("#orderPlaceHolder").val(text);
+		
+		// step 2: post data to database
+		const scriptURL = 'https://script.google.com/macros/s/AKfycbwkBVBLkELkRuc1PMcqkiyqmVxRCJJQir9gfOSmxhhim7Jgt8sm/exec'
+		const form = document.forms['submit-to-google-sheet']
+
+		fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+		  .then(function(response) {
+			console.log('Success!', response);
+			// step 3: 
+			// fade in 
+			$("#animation").fadeTo('fast', 1);  
+			// perform animation
+			highlightBoxes(sequence);
+		}).catch(function(error) {
+			console.error('Error!', error.message); 
+			alert('ERROR: Unable to save to server.');
+		});
+		
+		
+	}else{
+		$("#form-error").html("<font color='red'>Please select one option in each question.</font>");
+	}
+}
+
+function resetRadio() {
+	$("input:radio").each(function(){
+		var name = $(this).attr("name");
+		$("input:radio[name="+name+"]:checked").prop("checked", false);
+	});
+}
+
+function getSequence(){
+	var sequence = [];
+	var score = [];
+	var chosenSequence = [];
+	
+	for(i = 0; i < 7; i++){ // 7 choices in the questionnaire
+		sequence.push([]);
+		score.push([]);
+	}
+	
+	for(i = 0; i < words.length; i++){ 
+		sequence[$('input[name="field_' + i + '"]:checked').val()].push(i);
+		score[$('input[name="field_' + i + '"]:checked').val()].push(wordsWeight[i]);
+	}
+	
+	for(i = 0; i < 7; i++){
+		if(chosenSequence.length >= highlightCount) break;
+		else{
+			var sortedSubScore = score[6-i].slice(0).sort(function(a, b){return b-a}); // sort sequence[6-i] using score[6-1]
+			var sortedSubSequence = [];
+
+			for (j = 0; j < sortedSubScore.length; j++) {
+				sortedSubSequence.push(sequence[6-i][score[6-i].indexOf(sortedSubScore[j])]);
+			}
+			
+			for(j = 0; j < sortedSubSequence.length; j++){
+				chosenSequence.push(sortedSubSequence[j]);
+				if(chosenSequence.length >= highlightCount) break;
+			}
+		}
+	}
+	return chosenSequence;
+}
+
+function highlightBoxes(sequence){
+	targets = [];
+	
+	// schedule animation
+	var totalTime = timeFade * 2 + timeStay;
+	for(i = 0; i < sequence.length; i++){
+		targets.push($("#box_" + sequence[i]));
+		setTimeout(highlightBox, totalTime * i + 2000, targets[i]);
+		setTimeout(lowlightBox, totalTime * i + timeFade + timeStay + 2000, targets[i]);
+	}
+}
+
+function highlightBox(object){
+	object.removeClass("boxLowlight").addClass("boxHightlight");
+}
+
+function lowlightBox(object){
+	object.removeClass("boxHightlight").addClass("boxLowlight");
+}
+
+$(document).ready(function() {
+	$("#animation").hide();
+	$("#question").html(question);
+});
+
+// check radio if the td is pressed
+$("td").click(function () {
+	$(this).find('input:radio').prop("checked", true);;
+});
+
+</script>
+
+</body>
+</html>
+
