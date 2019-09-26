@@ -182,6 +182,7 @@ padding: 0;
 margin: 0;
 background: #fff;
 font-family: 'Barlow', sans-serif;
+/*font-family: 'Barlow', sans-serif;*/
 }
 body a {
 transition: 0.5s all;
@@ -368,8 +369,9 @@ text-decoration: none;
 width: 80%;
 }
 
-
-
+b{
+    font-weight: bold;
+}
 
 /* custom style */
 .radioTable{
@@ -397,8 +399,8 @@ width: 80%;
 	background-color: #ffeaa3;
 }
 
-#animation {
-    position: fixed;
+.fullscreen{
+	position: fixed;
     width: 100%;
     height: 100%;
     left: 0;
@@ -410,7 +412,7 @@ width: 80%;
 	transition: opacity 0.5s; 
 }
 
-.aniContainer{
+.boxContainer{
 	float: left;
 	display: flex;
 	flex-direction: column;  
@@ -418,7 +420,209 @@ width: 80%;
 	align-items: center; 
 }
 
+#loading, #download{
+	display: flex;
+	flex-direction: column;  
+    justify-content: center;
+	align-items: center; 
+}
+
+#loadingInner  { 
+	width: 680px; 
+	margin: 0 auto; 
+}
+
+#loadingBottom{
+	margin-top: 30px;
+	width: 100%;
+}
+
+#animationTop{
+	padding: 0;
+	height: 88%;
+}
+
+#animationBottom{
+	padding: 0;
+	text-align: center;
+	height: 12%;
+}
+
+#downloadInner { 
+}
+
+.submitContainer{
+	color: #FFFFFF;
+	width: 300px;
+	height: 80%;
+	padding: 0;
+	display: flex;
+	flex-direction: column;  
+    justify-content: center;
+	align-items: center; 
+}
+
+.submitName{
+	height: 20%;
+	padding: 0;
+	display: flex;
+	flex-direction: column;  
+    justify-content: center;
+	align-items: center; 
+}
+
+.submitContainer.downloadColor{
+	background: #4ebab7;
+	font-size: 30px;
+	-webkit-transition: background-color 0.1s linear;
+    -moz-transition: background-color 0.1s linear;
+    transition: background-color 0.1s linear;
+}
+
+.submitContainer.downloadColor:hover{
+	background: #8be8e5;
+	-webkit-transition: background-color 0.1s linear;
+    -moz-transition: background-color 0.1s linear;
+    transition: background-color 0.1s linear;
+}
+
+.submitContainer.loadingColor{
+	background: #db5f51;
+	font-size: 6px;
+	-webkit-transition: background-color 0.5s linear;
+    -moz-transition: background-color 0.5s linear;
+    transition: background-color 0.5s linear;
+}
+
+.submitContainer.successColor{
+	background: #a8e374;
+	font-size: 30px;
+	-webkit-transition: background-color 0.5s linear;
+    -moz-transition: background-color 0.5s linear;
+    transition: background-color 0.5s linear;
+}
+
+.submitContainer.failColor{
+	background: #db5f51;
+	font-size: 30px;
+}
+
+
+.loadContainer{
+	background: #FFF;
+	width: 300px;
+	height: 200px;
+	text-align: center;
+}
+
 strong {
     font-weight: bold;
 	text-decoration: underline;
+}
+
+
+/* loading animation */
+.loader,
+.loader:before,
+.loader:after {
+  border-radius: 50%;
+  width: 2.5em;
+  height: 2.5em;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation: load7 1.8s infinite ease-in-out;
+  animation: load7 1.8s infinite ease-in-out;
+}
+.loader {
+  margin: 0 auto;
+  position: relative;
+  text-indent: -9999em;
+  margin-bottom: 20px;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+.loader:before,
+.loader:after {
+  content: '';
+  position: absolute;
+  top: 0;
+}
+.loader:before {
+  left: -3.5em;
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+.loader:after {
+  left: 3.5em;
+}
+@-webkit-keyframes load7 {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 2.5em 0 -1.3em;
+  }
+  40% {
+    box-shadow: 0 2.5em 0 0;
+  }
+}
+@keyframes load7 {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 2.5em 0 -1.3em;
+  }
+  40% {
+    box-shadow: 0 2.5em 0 0;
+  }
+}
+
+/* button */
+a.buttonNextInactive{
+	border-color: #212121;
+	color:#212121;
+}
+a.buttonNextActive{
+	border-color: #FFFFFF;
+	color:#FFFFFF;
+}
+a.buttonNextActive:hover{
+	color:#000000;
+	background-color:#FFFFFF;
+}
+
+a.buttonSubmitInactive{
+	border-color: #CCC;
+	color:#CCC;
+}
+a.buttonSubmitActive{
+	border-color: #444;
+	color:#444;
+}
+a.buttonSubmitActive:hover{
+	color:#FFF;
+	background-color:#444;
+}
+
+a.buttonNext{
+	display:inline-block;
+	padding:12px 40px 10px 40px;
+	border-width: 2px;
+	border-style: solid;
+	border-radius:0.12em;
+	box-sizing: border-box;
+	text-decoration:none;
+	font-family:'Roboto',sans-serif;
+	font-weight:300;
+	text-align:center;
+	transition: all 0.2s;
+}
+
+@media all and (max-width:30em){
+	a.buttonNext{
+		display:block;
+		margin:0.4em auto;
+	}
 }

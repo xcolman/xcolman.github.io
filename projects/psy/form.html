@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<!--
+  Psychology Survey Box Highlight Animation
+  Ho Man Colman Leung, The Chinese University of Hong Kong
+  27-9-2019
+-->
+<html lang="en">
+<head>
+<title>Psychology Survey</title>
+<!-- Survey Script -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript">
+///////////////////////////////////////
+// adjust these settings accordingly //
+///////////////////////////////////////
+
+// the question
+var question = '請評估<strong>在另一位參加者眼中，你是個怎樣的人</strong>。請選出最能描述此刻你覺得他對你的看法。依照你的感受報告即可。';
+
+// the list of words (in the order of the questionnaire)
+var words = ['遲鈍','盲從','客氣','認真','計較','友善','無情','刻薄','善良','矛盾','沉著','自信','軟弱','體貼','風度','退縮','親切','坦誠','虛假','抑壓','聰慧','自私','謹慎','冷淡'];
+
+// the score of each word for tie-breaker 
+// higher = more important, each score has to be unique (no duplicates)
+var wordsWeight = [17, 2, 1, 10, 18, 4, 19, 24, 6, 13, 7, 22, 21, 12, 5, 16, 20, 11, 14, 8, 23, 9, 3, 15];
+
+// the order of words shown 
+// (in the following order, assuming default 6 x 4)
+//  1   2   3   4   ...   6
+//  7  ...               12
+// ...                  ...
+//  19 ...               24
+
+var wordsOrder = [8, 2, 24, 17, 7, 3, 5, 4, 22, 13, 12, 10, 14, 9, 21, 1, 6, 15, 11, 23, 19, 18, 16, 20];
+
+// number of words to be highlighted
+var highlightCount = 12;
+
+// number of boxes horizontally x number of boxes vertically
+var boxDim = [6, 4]; // default [6, 4] (6 x 4)
+
+// size of each box
+var boxWidth = 120; 
+
+// font size inside the box
+var fontSize = 40;
+
+// time adjustment
+var timeFade = 1000; // amount of time used to fade in/out (in ms, i.e., 1000 = 1s)
+var timeStay = 2000; // amount of time staying in highlight state
+
+// color adjustment
+var colorBackground = '#313131';
+var colorBox = '#e3e3e3';
+var colorHighlight = '#db5f51';
+var colorFont = '#000000';
+
+var filePath = "file:///C:/Users/Alfred%20Lo/OneDrive%20-%20The%20Chinese%20University%20of%20Hong%20Kong/Alfred/Competition%20study/Behavioral%20paradigms/FBT/eprime/";
+//var filePath = "file:///D:/data/common/phd/2019/eth/holz.docx";
+
+///////////////////////////////////////////////////////////////////////////////
+// do not change anything below this line unless you know what you are doing //
+///////////////////////////////////////////////////////////////////////////////
+var windowWidth = $(window).width();
+var windowHeight = $(window).height();
+
+// calculate box size
+var boxMarginX = (windowWidth - boxWidth * boxDim[0]) / (2 * (boxDim[0] + 1));
+var boxMarginY = (windowHeight - 50 - boxWidth * boxDim[1]) / (2 * (boxDim[1] + 1) + 1);
+
+var totalWidth = boxWidth * boxDim[0] + boxMarginX * (2 * boxDim[0]);
+
+console.log(boxMarginX);
+console.log(boxWidth);
+console.log(totalWidth);
+
+// Create our stylesheet
+var style = document.createElement('style');
+style.innerHTML =
+	'.aniContainer{' + 
+	'margin: ' + boxMarginY + 'px ' + boxMarginX + 'px ' + boxMarginY + 'px ' + boxMarginX + 'px;' + 
+	'width: ' + boxWidth + 'px;' + 
+	'height: ' + boxWidth + 'px;' + // we want rectangles, so same dimension
+	'font-size: ' + fontSize + 'px;' +
+	'color: ' + colorFont + ';' + 
+	'-webkit-transition: background-color ' + timeFade + 'ms linear;' + 
+    '-moz-transition: background-color ' + timeFade + 'ms linear;' + 
+    'transition: background-color ' + timeFade + 'ms linear;' + 
+	'}' + 
+	'#animationTop{' + 
+	'margin: ' + boxMarginY + 'px ' + boxMarginX + 'px 0px ' + boxMarginX + 'px;' + 
+	'width: ' + totalWidth + 'px;' +
+	'}' +
+	'#animationBottom{' + 
+	'margin: 0px ' + boxMarginX + 'px;' + 
+	'width: ' + totalWidth + 'px;' +
+	'}' +
+	'.fullscreen{' + 
+	'background: ' + colorBackground + ';' + 
+	'}' + 
+	'.boxLowlight{' + 
+	'background: ' + colorBox + ';' + 
+	'}' +
+	'.boxHightlight{' + 
+	'background: ' + colorHighlight + ';' + 
+	'}';
+
+// Get the first script tag
+var ref = document.querySelector('script');
+
+// Insert our new styles before the first script tag
+ref.parentNode.insertBefore(style, ref);
+
+var targets = [];
+var displaySequence = [];
+</script>
+<!-- Meta tags -->
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script>
+addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); }
+</script>
+<!-- Meta tags -->
+<!--stylesheets-->
+<link href="css/style.css" rel='stylesheet' type='text/css' media="all">
+<!--//style sheet end here-->
+<link href="http://fonts.googleapis.com/css?family=Barlow:300,400,500" rel="stylesheet">
+</head>
+<body>
+
+
+<body>
+<!--
+<h1 class="header-w3ls">
+Psychology Survey
+</h1>
+-->
+<br /><br />
+<!-- multistep form -->
+<div id="formInput" class="main-bothside">
+<form name="submit-to-google-sheet" method="post">
+<div class="personal-info">
+<p>參加者編號: <input id="thisID" type="text" name="participantID" class="pid"></p>
+<p id="question"></p>
+</div>
+
+<table class="radioTable">
+<col width="3%">
+<col width="10%">
+<col width="10%">
+<col width="11%">
+<col width="11%">
+<col width="11%">
+<col width="11%">
+<col width="11%">
+<col width="11%">
+<col width="11%">
+<tr>
+<th colspan="3" style="text-align:left">我覺得對方眼中的我...</th>
+<th>完全不符合</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th>完全符合</th>
+</tr>
+<script type="text/javascript">
+var i;
+var j;
+for (i = 0; i < words.length; i++) {
+  document.write('<tr>');
+  document.write('<td style="text-align:left">' + (i + 1) + '. </td>');
+  document.write('<td style="text-align:left">' + words[i] + ': </td>');
+  document.write('<td style="text-align:left"><input name="field_' + i + '" maxlength="1" size="1" type="text" onClick="this.select();"></td>');
+  for (j = 0; j < 7; j++){
+	document.write('<td><label class="radio"><input id="radioBox_' + i + '_' + j + '" class="form-check-input" type="radio" name="field_' + i + '" value="'+ j + '"></label></td>')
+  }
+  document.write('</tr>');
+}
+</script>
+</table>
+<br />
+<p>另一位參加者編號: <input id="thatID" type="text" name="anotherParticipantID" class="pid"></p>
+<br />
+<p id="form-error"></p>
+<br />
+<a href="" class="buttonNext buttonSubmitActive" onclick="submitBtnClick(); return false;">Submit</a>
+<!--<button type="button" onclick="resetRadio(); return false;">Reset</button>-->
+<input id="orderPlaceHolder" type="hidden" name="order" value="">
+</form>
+</div>
+
+<div id="loading" class="fullscreen">
+<div id="loadingInner">
+<div id="thisBox" class="loadContainer" style="float: left;">
+<div class="submitName">
+<b><p id="showThisID">參加者 1</p></b>
+</div>
+<div class="submitContainer loadingColor">
+<div class="loader"></div>
+</div>
+</div>
+<div id="thatBox" class="loadContainer" style="float: right;">
+<div class="submitName">
+<b><p id="showThatID">參加者 2</p></b>
+</div>
+<div class="submitContainer loadingColor">
+<div class="loader"></div>
+</div>
+</div>
+<br /><br />
+<div id="loadingBottom" class="boxContainer">
+<a href="" id="loadNextBtn" class="buttonNext buttonNextInactive" onclick="captureClick(event); return false;">Next</a>
+</div>
+</div>
+</div>
+
+<div id="animation" class="fullscreen">
+<div id="animationTop">
+<script type="text/javascript">
+for (i = 0; i < 4; i++) {
+	for(j = 0; j < 6; j++){
+		if(i * 6 + j < words.length){
+			document.write('<div class="aniContainer boxLowlight boxContainer" id="box_' + (wordsOrder[i * 6 + j] - 1) + '"><b>'+words[wordsOrder[i * 6 + j] - 1] + '</b></div>');
+		}
+	}
+}
+</script>
+</div>
+<div id="animationBottom">
+<a href="" id="aniNextBtn" class="buttonNext buttonNextInactive" onclick="captureClick(event); return false;">Next</a>
+</div>
+</div>
+
+<div id="download" class="fullscreen">
+<div id="downloadInner" class="loadContainer">
+<div class="submitName">
+<b><p id="showThatID">完成</p></b>
+</div>
+<script type="text/javascript">
+document.write('<a href="' + filePath + '">');
+</script>
+<div class="submitContainer downloadColor">
+DOWNLOAD
+</div>
+</a>
+</div>
+</div>
+
+<script type="text/javascript">
+function switchScene(sceneID){
+	if(sceneID == 1){
+		$("#formInput").fadeTo('fast', 0, function(){$("#formInput").hide();});
+		$("#loading").fadeTo('fast', 1);  
+	}
+	else if(sceneID == 2){
+		$("#loading").fadeTo('fast', 0, function(){$("#loading").hide();});
+		$("#animation").fadeTo('fast', 1); 
+	}
+	else if(sceneID == 3){
+		$("#animation").fadeTo('fast', 0, function(){$("#animation").hide();});
+		$("#download").fadeTo('fast', 1); 
+	}
+}
+
+function anotherSubmission(box){
+	loadSuccess(box);
+}
+
+function activateNextBtn(nextBtn){
+	nextBtn.removeClass("buttonNextInactive").addClass("buttonNextActive");
+}
+
+function captureClick(event){
+	event.preventDefault();
+}
+
+function submitBtnClick() {
+	var radioCheck = true;
+	var idCheck = true;
+	// make sure all radios are selected
+	$("input:radio").each(function(){
+		var name = $(this).attr("name");
+		if($("input:radio[name="+name+"]:checked").length == 0){
+			$("input:radio[name="+name+"]").closest( "tr" ).css( "background-color", "#ffeaa3" ); // highlight missing
+			radioCheck = false;
+		}
+	});
+	
+	// make sure participant ID is filled
+	if ($("#thisID").val().length == 0 || $("#thatID").val().length == 0) idCheck = false;
+	
+	if(radioCheck && idCheck){
+		// remove error text (if any)
+		//$("#form-error").html();
+		
+		// step 1: calculate sequence 
+		displaySequence = getSequence();
+
+		// write result to debug console
+		var text = "";
+		for(i = 0; i < highlightCount; i++){
+			text = text + words[displaySequence[i]] + " ";
+		}
+		console.log(text);
+		// put the text into a placeholder inside the form
+		$("#orderPlaceHolder").val(text);
+		
+		// switch to loading scene
+		switchScene(1);
+		
+		// post data to database
+		const scriptURL = 'https://script.google.com/macros/s/AKfycbwkBVBLkELkRuc1PMcqkiyqmVxRCJJQir9gfOSmxhhim7Jgt8sm/exec'
+		const form = document.forms['submit-to-google-sheet']
+
+		fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+		  .then(function(response) {
+			console.log('Success!', response);
+			// show loading status
+			
+			loadSuccess($("#thisBox"));
+			setTimeout(anotherSubmission, 10000, $("#thatBox"));
+			setTimeout(activateNextBtn, 10800, $("#loadNextBtn"));
+			
+		}).catch(function(error) {
+			console.error('Error!', error.message); 
+			loadFailed($("#thisBox"));
+		});
+		
+		
+	}else{
+		$("#form-error").html();
+		var errorString = "";
+		if(!radioCheck){
+			errorString += "<font color='red'>Please select one option in each question.</font><br />";
+		}
+		if(!idCheck){
+			errorString += "<font color='red'>Please fill in both participants' ID.</font><br />";
+		}
+		$("#form-error").html(errorString);
+	}
+}
+
+
+function resetRadio() {
+	$("input:radio").each(function(){
+		var name = $(this).attr("name");
+		$("input:radio[name="+name+"]:checked").prop("checked", false);
+	});
+}
+
+function getSequence(){
+	var sequence = [];
+	var score = [];
+	var chosenSequence = [];
+	
+	for(i = 0; i < 7; i++){ // 7 choices in the questionnaire
+		sequence.push([]);
+		score.push([]);
+	}
+	
+	for(i = 0; i < words.length; i++){ 
+		sequence[$('input[name="field_' + i + '"]:checked').val()].push(i);
+		score[$('input[name="field_' + i + '"]:checked').val()].push(wordsWeight[i]);
+	}
+	
+	for(i = 0; i < 7; i++){
+		if(chosenSequence.length >= highlightCount) break;
+		else{
+			var sortedSubScore = score[6-i].slice(0).sort(function(a, b){return b-a}); // sort sequence[6-i] using score[6-1]
+			var sortedSubSequence = [];
+
+			for (j = 0; j < sortedSubScore.length; j++) {
+				sortedSubSequence.push(sequence[6-i][score[6-i].indexOf(sortedSubScore[j])]);
+			}
+			
+			for(j = 0; j < sortedSubSequence.length; j++){
+				chosenSequence.push(sortedSubSequence[j]);
+				if(chosenSequence.length >= highlightCount) break;
+			}
+		}
+	}
+	return chosenSequence;
+}
+
+function highlightBoxes(sequence){
+	targets = [];
+	
+	// schedule animation
+	//var totalTime = timeFade * 2 + timeStay;
+	for(i = 0; i < sequence.length; i++){
+		targets.push($("#box_" + sequence[i]));
+		// show one by one
+		//setTimeout(highlightBox, totalTime * i + 2000, targets[i]);
+		//setTimeout(lowlightBox, totalTime * i + timeFade + timeStay + 2000, targets[i]); 
+		// show all at the same time
+		setTimeout(highlightBox, 2000, targets[i]);
+		setTimeout(lowlightBox, timeFade + timeStay + 2000, targets[i]); 
+	}
+	setTimeout(activateNextBtn, timeFade + timeStay + 2000 + 800, $("#aniNextBtn"));
+}
+
+function highlightBox(object){
+	object.removeClass("boxLowlight").addClass("boxHightlight");
+}
+
+function lowlightBox(object){
+	object.removeClass("boxHightlight").addClass("boxLowlight");
+}
+
+// Restricts input for the given textbox to the given inputFilter.
+function setInputFilter(textbox, inputFilter) {
+  ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
+    textbox.addEventListener(event, function() {
+      if (inputFilter(this.value)) {
+        this.oldValue = this.value;
+        this.oldSelectionStart = this.selectionStart;
+        this.oldSelectionEnd = this.selectionEnd;
+      } else if (this.hasOwnProperty("oldValue")) {
+        this.value = this.oldValue;
+        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+      }
+    });
+  });
+}
+
+function loadSuccess(object){
+	object.find(".submitContainer").html("SUBMITTED");
+	object.find(".submitContainer").removeClass("loadingColor").addClass("successColor");
+}
+
+function loadFailed(object){
+	object.find(".submitContainer").html("FAILED!");
+	object.find(".submitContainer").removeClass("loadingColor").addClass("failColor");
+}
+
+$(document).ready(function() {
+	//$("#formInput").hide();
+	$("#loading").hide();
+	$("#animation").hide();
+	$("#download").hide();
+	
+	$("#question").html(question);
+	
+	// Restrict input to positive integers
+	setInputFilter(document.getElementById("thisID"), function(value) {
+	  return /^\d*$/.test(value);
+	});
+	setInputFilter(document.getElementById("thatID"), function(value) {
+	  return /^\d*$/.test(value);
+	});
+	
+	// check radio if the td is pressed
+	$("td").click(function () {
+		$(this).find('input:radio').prop("checked", true);
+	});
+	
+	
+	// Scripting shortcut boxes
+	var textboxes = $("input:text").not('.pid');
+	textboxes.each(function(index, el) {
+		$(this).on("propertychange change keyup paste input", function(){
+			if($(this).val() > 0 && $(this).val() <= 7){
+				$('input:radio[name=' + $(this).attr("name") + '][value=' + ($(this).val() - 1) + ']').prop("checked", true);
+				if(index !== textboxes.length - 1) {
+					// select the next span
+					textboxes.eq(index + 1).focus();
+				}
+			}
+			else{
+				$(this).val("");
+			}
+		});
+	});
+	
+	// update text in loading scene according to user's input
+	$("#thisID").on("propertychange change keyup paste input", function(){
+		$("#showThisID").html("參加者 " + $("#thisID").val());
+	});
+	
+	$("#thatID").on("propertychange change keyup paste input", function(){
+		$("#showThatID").html("參加者 " + $("#thatID").val());
+	});
+	
+	$("#loadingBottom").on("click", ".buttonNextActive", function(){
+		// switch scene
+		switchScene(2);
+		
+		// perform animation
+		highlightBoxes(displaySequence);
+	});
+	
+	$("#animationBottom").on("click", ".buttonNextActive", function(){
+	// switch scene
+		switchScene(3);
+	});
+});
+
+
+
+
+</script>
+<!--
+<div class="copy">
+<p>©2019 Department of Psychology, The Chinese University of Hong Kong. 
+</div>
+-->
+</body>
+</html>
+
