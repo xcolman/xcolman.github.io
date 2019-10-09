@@ -180,7 +180,7 @@ for (i = 0; i < words.length; i++) {
 <br />
 <p id="form-error"></p>
 <br />
-<a href="" class="buttonNext buttonSubmitActive" onclick="submitBtnClick(); return false;">提交</a>
+<a href="" id="submitNextBtn" class="buttonNext buttonSubmitActive" onclick="captureClick(event); return false;">提交</a>
 <!--<button type="button" onclick="resetRadio(); return false;">Reset</button>-->
 <input id="orderPlaceHolder" type="hidden" name="order" value="">
 </form>
@@ -490,7 +490,13 @@ $(document).ready(function() {
 		$("#showThatID").html("參加者 " + $("#thatID").val());
 	});
 	
-	$("#loadingBottom").on("click", ".buttonNextActive", function(){
+	$("#submitNextBtn").on("click", ".buttonNextActive", function(event){
+		submitBtnClick();
+	}
+	
+	$("#loadingBottom").on("click", ".buttonNextActive", function(event){
+		event.preventDefault();
+	
 		// switch scene
 		switchScene(2);
 		
@@ -498,8 +504,9 @@ $(document).ready(function() {
 		highlightBoxes(displaySequence);
 	});
 	
-	$("#animationBottom").on("click", ".buttonNextActive", function(){
-	// switch scene
+	$("#animationBottom").on("click", ".buttonNextActive", function(event){
+		event.preventDefault();
+		// switch scene
 		switchScene(3);
 	});
 });
