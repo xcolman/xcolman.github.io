@@ -180,7 +180,7 @@ for (i = 0; i < words.length; i++) {
 <br />
 <p id="form-error"></p>
 <br />
-<a href="" id="submitNextBtn" class="buttonNext buttonSubmitActive">提交</a>
+<div id="submitNextBtn" class="buttonNext buttonSubmitActive">提交</div>
 <!--<button type="button" onclick="resetRadio(); return false;">Reset</button>-->
 <input id="orderPlaceHolder" type="hidden" name="order" value="">
 </form>
@@ -206,7 +206,7 @@ for (i = 0; i < words.length; i++) {
 </div>
 <br /><br />
 <div id="loadingBottom" class="boxContainer">
-<a href="" id="loadNextBtn" class="buttonNext buttonNextInactive">下一頁</a>
+<div id="loadNextBtn" class="buttonNext buttonNextInactive">下一頁</div>
 </div>
 </div>
 </div>
@@ -224,7 +224,7 @@ for (i = 0; i < 4; i++) {
 </script>
 </div>
 <div id="animationBottom">
-<a href="" id="aniNextBtn" class="buttonNext buttonNextInactive">下一頁</a>
+<div id="aniNextBtn" class="buttonNext buttonNextInactive">下一頁</div>
 </div>
 </div>
 
@@ -265,10 +265,6 @@ function anotherSubmission(box){
 
 function activateNextBtn(nextBtn){
 	nextBtn.removeClass("buttonNextInactive").addClass("buttonNextActive");
-}
-
-function captureClick(event){
-	event.preventDefault();
 }
 
 function submitBtnClick() {
@@ -490,25 +486,36 @@ $(document).ready(function() {
 		$("#showThatID").html("參加者 " + $("#thatID").val());
 	});
 	
-	$("#submitNextBtn").on("click", ".buttonNextActive", function(event){
+	$("#submitNextBtn").on("click", function(event){
 		event.preventDefault();
-		submitBtnClick();
-	});
-	
-	$("#loadingBottom").on("click", ".buttonNextActive", function(event){
-		event.preventDefault();
-	
-		// switch scene
-		switchScene(2);
 		
-		// perform animation
-		highlightBoxes(displaySequence);
+		if($("#submitNextBtn").hasClass("buttonSubmitActive")){
+			submitBtnClick();
+		}
+		else{
+			console.log($("#submitNextBtn"));
+		}
 	});
 	
-	$("#animationBottom").on("click", ".buttonNextActive", function(event){
+	$("#loadNextBtn").on("click", function(event){
 		event.preventDefault();
-		// switch scene
-		switchScene(3);
+	
+		if($("#loadNextBtn").hasClass("buttonNextActive")){
+			// switch scene
+			switchScene(2);
+			
+			// perform animation
+			highlightBoxes(displaySequence);
+		}
+	});
+	
+	$("#aniNextBtn").on("click", function(event){
+		event.preventDefault();
+		
+		if($("#aniNextBtn").hasClass("buttonNextActive")){
+			// switch scene
+			switchScene(3);
+		}
 	});
 });
 
