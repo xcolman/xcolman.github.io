@@ -599,33 +599,37 @@ strong {
 }
 
 /* button */
-a.buttonNextInactive{
+div.buttonNextInactive{
+	cursor: not-allowed;
 	border-color: #212121;
 	color:#212121;
 }
-a.buttonNextActive{
+div.buttonNextActive{
+	cursor: pointer;
 	border-color: #FFFFFF;
 	color:#FFFFFF;
 }
-a.buttonNextActive:hover{
+div.buttonNextActive:hover{
 	color:#000000;
 	background-color:#FFFFFF;
 }
 
-a.buttonSubmitInactive{
+div.buttonSubmitInactive{
+	cursor: not-allowed;
 	border-color: #CCC;
 	color:#CCC;
 }
-a.buttonSubmitActive{
+div.buttonSubmitActive{
+	cursor: pointer;
 	border-color: #444;
 	color:#444;
 }
-a.buttonSubmitActive:hover{
+div.buttonSubmitActive:hover{
 	color:#FFF;
 	background-color:#444;
 }
 
-a.buttonNext{
+div.buttonNext{
 	display:inline-block;
 	padding:12px 40px 10px 40px;
 	border-width: 2px;
@@ -637,11 +641,8 @@ a.buttonNext{
 	font-weight:300;
 	text-align:center;
 	transition: all 0.2s;
-}
-
-@media all and (max-width:30em){
-	a.buttonNext{
-		display:block;
-		margin:0.4em auto;
-	}
+	-webkit-user-select: none; /* Safari */        
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+/Edge */
+	user-select: none; /* Standard */
 }

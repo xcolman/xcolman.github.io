@@ -18,7 +18,7 @@
 var question = '請評估<strong>在另一位參加者眼中，你是個怎樣的人</strong>。請選出最能描述此刻你覺得他對你的看法。依照你的感受報告即可。';
 
 // the list of words (in the order of the questionnaire)
-var words = ['遲鈍','盲從','客氣','認真','計較','友善','無情','刻薄','善良','矛盾','沉著','自信','軟弱','體貼','風度','退縮','親切','坦誠','虛假','抑壓','聰慧','自私','謹慎','冷淡'];
+var words = ['遲鈍','盲從','客氣','認真','計較','友善','無情','刻薄','善良','矛盾','沉著','自信','軟弱','體貼','風度','退縮','親切','坦誠','虛假','壓抑','聰慧','自私','謹慎','冷淡'];
 
 // the score of each word for tie-breaker 
 // higher = more important, each score has to be unique (no duplicates)
@@ -180,7 +180,7 @@ for (i = 0; i < words.length; i++) {
 <br />
 <p id="form-error"></p>
 <br />
-<a href="" class="buttonNext buttonSubmitActive" onclick="submitBtnClick(); return false;">提交</a>
+<div id="submitNextBtn" class="buttonNext buttonSubmitActive">提交</div>
 <!--<button type="button" onclick="resetRadio(); return false;">Reset</button>-->
 <input id="orderPlaceHolder" type="hidden" name="order" value="">
 </form>
@@ -206,7 +206,7 @@ for (i = 0; i < words.length; i++) {
 </div>
 <br /><br />
 <div id="loadingBottom" class="boxContainer">
-<a href="" id="loadNextBtn" class="buttonNext buttonNextInactive" onclick="captureClick(event); return false;">下一頁</a>
+<div id="loadNextBtn" class="buttonNext buttonNextInactive">下一頁</div>
 </div>
 </div>
 </div>
@@ -224,7 +224,7 @@ for (i = 0; i < 4; i++) {
 </script>
 </div>
 <div id="animationBottom">
-<a href="" id="aniNextBtn" class="buttonNext buttonNextInactive" onclick="captureClick(event); return false;">下一頁</a>
+<div id="aniNextBtn" class="buttonNext buttonNextInactive">下一頁</div>
 </div>
 </div>
 
@@ -265,10 +265,6 @@ function anotherSubmission(box){
 
 function activateNextBtn(nextBtn){
 	nextBtn.removeClass("buttonNextInactive").addClass("buttonNextActive");
-}
-
-function captureClick(event){
-	event.preventDefault();
 }
 
 function submitBtnClick() {
@@ -490,17 +486,36 @@ $(document).ready(function() {
 		$("#showThatID").html("參加者 " + $("#thatID").val());
 	});
 	
-	$("#loadingBottom").on("click", ".buttonNextActive", function(){
-		// switch scene
-		switchScene(2);
+	$("#submitNextBtn").on("click", function(event){
+		event.preventDefault();
 		
-		// perform animation
-		highlightBoxes(displaySequence);
+		if($("#submitNextBtn").hasClass("buttonSubmitActive")){
+			submitBtnClick();
+		}
+		else{
+			console.log($("#submitNextBtn"));
+		}
 	});
 	
-	$("#animationBottom").on("click", ".buttonNextActive", function(){
-	// switch scene
-		switchScene(3);
+	$("#loadNextBtn").on("click", function(event){
+		event.preventDefault();
+	
+		if($("#loadNextBtn").hasClass("buttonNextActive")){
+			// switch scene
+			switchScene(2);
+			
+			// perform animation
+			highlightBoxes(displaySequence);
+		}
+	});
+	
+	$("#aniNextBtn").on("click", function(event){
+		event.preventDefault();
+		
+		if($("#aniNextBtn").hasClass("buttonNextActive")){
+			// switch scene
+			switchScene(3);
+		}
 	});
 });
 
