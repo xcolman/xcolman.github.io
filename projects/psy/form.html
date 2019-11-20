@@ -15,7 +15,7 @@
 ///////////////////////////////////////
 
 // the question
-var question = '請評估<strong>在另一位參加者眼中，你是個怎樣的人</strong>。請選出最能描述此刻你覺得他對你的看法。依照你的感受報告即可。';
+var question = '請評估<strong>你覺得另一位參加者是怎樣的人</strong>。請選出最能描述此刻你覺得他對你的看法。依照你的感受報告即可。';
 
 // the list of words (in the order of the questionnaire)
 var words = ['遲鈍','盲從','客氣','認真','計較','友善','無情','刻薄','善良','矛盾','沉著','自信','軟弱','體貼','風度','退縮','親切','坦誠','虛假','壓抑','聰慧','自私','謹慎','冷淡'];
@@ -55,7 +55,7 @@ var colorBox = '#e3e3e3';
 var colorHighlight = '#db5f51';
 var colorFont = '#000000';
 
-var filePath = "file:///C:/Users/psyuser/Desktop/FHP/Experiment%20programs/SFT/EPrime/SFT.ebs2";
+//var filePath = "file:///C:/Users/psyuser/Desktop/FHP/Experiment%20programs/SFT/EPrime/SFT.ebs2";
 
 ///////////////////////////////////////////////////////////////////////////////
 // do not change anything below this line unless you know what you are doing //
@@ -233,9 +233,7 @@ for (i = 0; i < 4; i++) {
 <!--<div class="submitName">
 <b><p id="showThatID"></p></b>
 </div>-->
-<script type="text/javascript">
-document.write('<a href="' + filePath + '">');
-</script>
+<a id="downloadBtn" download="Participant.ebs2" href="Participant.ebs2">
 <div class="downloadContainer downloadColor">
 繼續
 </div>
@@ -326,6 +324,7 @@ function submitBtnClick() {
 		
 		setTimeout(activateNextBtn, 35800, $("#loadNextBtn"));
 		
+		$("#downloadBtn").attr("download", "Participant_" + $("#thatID").val() + ".ebs2");
 		
 	}else{
 		$("#form-error").html();
