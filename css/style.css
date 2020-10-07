@@ -351,7 +351,7 @@ button:focus,
 
 .icon-list li {
     display : inline-block;
-    margin  : 0 2px;
+    margin  : 0 4px 0 0;
     }
 
 .icon-list li a {
@@ -722,5 +722,5 @@ img, img.scale-with-grid { outline: 0; max-width: 100%; height: auto; }
 }
 
 .parser:after {
-  content: attr(data-name) "@" attr(data-domain) "." attr(data-tld); 
+  content: attr(data-name) "." attr(data-school) "@" attr(data-domain) "." attr(data-tld); 
 }
