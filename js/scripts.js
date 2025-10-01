@@ -7,9 +7,8 @@ jQuery(function ($) {
     // --------------------------------------------------------------------
 
     (function () {
-        $('#preloader').delay(200).fadeOut('slow');
+        $('#preloader').fadeOut('slow');
     }());
-
 
 
     // --------------------------------------------------------------------
@@ -18,7 +17,31 @@ jQuery(function ($) {
 
     $('.left-col-block, .right-col-block').theiaStickySidebar();
 	
-	
+	/*----------------------------------------------------*/
+	/*	Content toggle
+	------------------------------------------------------*/
+
+	function toggleContent() {
+	const more = document.getElementById("more-content");
+	if (more.style.display === "none") {
+		more.style.display = "block";
+	} else {
+		more.style.display = "none";
+	}
+	}
+
+	$('#read-more-btn').on('click', function(e) {
+		e.preventDefault(); // stop jumping to the top
+		$('#more-content').toggle();
+
+		// optional: change link text
+		if ($('#more-content').is(':visible')) {
+			$(this).text('hide my designs :(');
+		} else {
+			$(this).text('see my designs :)');
+		}
+	});
+
 	/*----------------------------------------------------*/
 	/*	Modal Popup
 	------------------------------------------------------*/
@@ -65,9 +88,9 @@ jQuery(function ($) {
 	$(function() {
 		$(".rslides").responsiveSlides({
 			auto: true,             // Boolean: Animate automatically, true or false
-			speed: 500,            // Integer: Speed of the transition, in milliseconds
+			speed: 500,             // Integer: Speed of the transition, in milliseconds
 			timeout: 4000,          // Integer: Time between slide transitions, in milliseconds
-			pager: true,           // Boolean: Show pager, true or false
+			pager: true,            // Boolean: Show pager, true or false
 			nav: false,             // Boolean: Show navigation, true or false
 			random: false,          // Boolean: Randomize the order of the slides, true or false
 			pause: false,           // Boolean: Pause on hover, true or false
