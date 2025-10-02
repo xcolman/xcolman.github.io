@@ -767,3 +767,17 @@ img, img.scale-with-grid { outline: 0; max-width: 100%; height: auto; }
 .parser:after {
   content: attr(data-name) "." attr(data-school) "@" attr(data-domain) "." attr(data-tld); 
 }
+
+
+
+.content-toggle {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.6s ease, opacity 0.6s ease;
+}
+
+.content-toggle.show {
+  max-height: 900px; /* adjust to your content */
+  opacity: 1;
+}

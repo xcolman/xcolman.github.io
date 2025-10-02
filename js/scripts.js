@@ -31,16 +31,16 @@ jQuery(function ($) {
 	}
 
 	$('#read-more-btn').on('click', function(e) {
-		e.preventDefault(); // stop jumping to the top
-		$('#more-content').toggle();
+		e.preventDefault();
+		$('#more-content').toggleClass('show');
 
-		// optional: change link text
-		if ($('#more-content').is(':visible')) {
+		if ($('#more-content').hasClass('show')) {
 			$(this).text('hide my designs :(');
 		} else {
 			$(this).text('see my designs :)');
 		}
 	});
+
 
 	/*----------------------------------------------------*/
 	/*	Modal Popup
