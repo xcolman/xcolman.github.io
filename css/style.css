@@ -551,6 +551,27 @@ button:focus,
     margin-bottom: 20px; /* adjust spacing */
 }
 
+.pub-badges a {
+    display: inline-block;
+    margin: 0px 4px 0px 0;
+    padding: 0px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-color);
+    border: 2px solid var(--background-left-color);
+    background-color: #ffffff; /* your theme color */
+    border-radius: 12px;
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.pub-badges a:hover {
+    background-color: var(--secondary-color);
+    border: 2px solid var(--secondary-color);
+    color: var(--background-left-color);
+    /* transform: translateY(-2px); */
+}
+
 
 /*-------------------
  * Contact

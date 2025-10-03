@@ -47,18 +47,32 @@ jQuery(function ($) {
 	------------------------------------------------------*/
 
 	$('.item-wrap a').magnificPopup({
+		type: 'inline',
+		fixedContentPos: false,
+		removalDelay: 200,
+		showCloseBtn: false,
+		mainClass: 'mfp-fade',
 
-	   type:'inline',
-	   fixedContentPos: false,
-	   removalDelay: 200,
-	   showCloseBtn: false,
-	   mainClass: 'mfp-fade'
+		// 🔑 add lazy-load here
+		callbacks: {
+			open: function () {
+				const $modal = this.content;
+				$modal.find("img[data-src], iframe[data-src], video[data-src]").each(function () {
+					this.src = this.dataset.src;
+					$(this).removeAttr("data-src");
 
+					// optional fade-in effect
+					$(this).css("opacity", 0).on("load", function () {
+						$(this).animate({ opacity: 1 }, 300);
+					});
+				});
+			}
+		}
 	});
 
 	$(document).on('click', '.popup-modal-dismiss', function (e) {
-			e.preventDefault();
-			$.magnificPopup.close();
+		e.preventDefault();
+		$.magnificPopup.close();
 	});
 	
 	/*----------------------------------------------------*/
