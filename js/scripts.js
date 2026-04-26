@@ -35,9 +35,9 @@ jQuery(function ($) {
 		$('#more-content').toggleClass('show');
 
 		if ($('#more-content').hasClass('show')) {
-			$(this).text('hide my designs :(');
+			$(this).text('[thanks for viewing :)]');
 		} else {
-			$(this).text('see my designs :)');
+			$(this).text('[view portfolio]');
 		}
 	});
 
