@@ -800,3 +800,21 @@ img, img.scale-with-grid { outline: 0; max-width: 100%; height: auto; }
   max-height: 900px; /* adjust to your content */
   opacity: 1;
 }
+
+/* Job market callout in About Me */
+.job-callout {
+  border-left: 3px solid var(--secondary-color);
+  background: rgba(32, 178, 170, 0.07);
+  padding: 10px 16px;
+  border-radius: 0 6px 6px 0;
+}
+
+.job-callout a {
+  color: #0B6E69;
+  font-weight: 500;
+}
+
+.job-callout a:hover,
+.job-callout a:focus {
+  color: var(--secondary-focus-color);
+}
