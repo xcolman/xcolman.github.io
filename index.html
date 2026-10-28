@@ -343,7 +343,9 @@ footer { border-top: 1px solid var(--line); padding-block: 36px 48px; }
 .foot { display: flex; flex-wrap: wrap; gap: 24px 40px; justify-content: space-between; align-items: flex-start; }
 .foot p { color: var(--muted); font-size: 14.5px; max-width: 60ch; }
 .foot .meta { font-family: var(--font-mono); font-size: 12.5px; color: var(--faint); }
-.visitors { max-width: 280px; }
+/* The MapMyVisitors widget (w=a) takes the width of this box when it loads. */
+.visitors { width: min(100%, 420px); }
+.visitors > div, .visitors iframe, .visitors canvas, .visitors img { max-width: 100%; border-radius: 10px; }
 
 
 /* Design gallery */
@@ -406,7 +408,7 @@ footer { border-top: 1px solid var(--line); padding-block: 36px 48px; }
 .lb-count, .lb-meta { font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); }
 .lb-meta { margin: 2px 0 8px; }
 .visitors .meta { margin-bottom: 8px; }
-.vm-placeholder { width: 260px; height: 130px; border: 1px dashed var(--line); border-radius: 10px; display: grid; place-items: center; text-align: center; padding: 12px; font-size: 13px; color: var(--faint); }
+.vm-placeholder { width: 100%; height: 210px; border: 1px dashed var(--line); border-radius: 10px; display: grid; place-items: center; text-align: center; padding: 12px; font-size: 13px; color: var(--faint); }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
@@ -779,7 +781,7 @@ footer { border-top: 1px solid var(--line); padding-block: 36px 48px; }
     <div>
       <p class="meta">© 2026 Ho Man Colman Leung · Last updated <span id="updated">Oct 2026</span></p>
     </div>
-    <div class="visitors"><p class="meta">Visitors</p><script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=pKEjTZHvsuKpPobxEa6lnOmGf2iJ_301xjmbrzFI-pA&cl=ffffff&w=a"></script></div>
+    <div class="visitors"><p class="meta">Visitors</p><script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=pKEjTZHvsuKpPobxEa6lnOmGf2iJ_301xjmbrzFI-pA&cl=ffffff&w=a&co=2b6a9a&ct=ffffff"></script></div>
   </div>
 </footer>
 
