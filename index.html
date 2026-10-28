@@ -1,942 +1,970 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="google-site-verification" content="RcC3ZBF5pRVvspx-5aWglpYjgdjf9-GF0BWQ80maoPY" />
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Colman Leung</title>
-    <meta name="description" content="Ho Man Colman Leung, CS PhD candidate at Columbia University. Wearable and physiological sensing through hardware-software co-design.">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="google-site-verification" content="RcC3ZBF5pRVvspx-5aWglpYjgdjf9-GF0BWQ80maoPY">
+<meta name="description" content="Ho Man Colman Leung, CS PhD candidate at Columbia University. Wearable and physiological sensing through hardware-software co-design.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://colmanleung.com/">
+<meta property="og:title" content="Ho Man Colman Leung · Wearable Health Sensing">
+<meta property="og:description" content="CS PhD candidate at Columbia University. Wearable and physiological sensing through hardware-software co-design.">
+<meta property="og:image" content="https://colmanleung.com/img/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg">
+<title>Colman Leung · Wearable Health Sensing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one 1040px column, sticky nav, portrait + intro hero over an ECG trace,
+   then sections; dated ones sit on a thin timeline. */
+:root {
+  --bg: #fbf9f6;          /* warm off-white, a touch of brown */
+  --surface: #fffefc;
+  --fg: #262a33;
+  --muted: #625f5b;
+  --faint: #97928b;
+  --line: #ebe5dc;
+  --accent: #2b6a9a;      /* steel blue, links and headings */
+  --accent-2: #17867f;    /* sea green, callout and chips */
+  --pulse: #e9685a;       /* coral, the ECG trace */
+  --chip-bg: #f4efe8;
+  --callout-bg: #edf4f1;
+  --shadow: 0 1px 2px rgba(60, 45, 30, .05), 0 8px 24px rgba(60, 45, 30, .08);
+  --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Instrument Sans", "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --nav-h: 60px;
+  --stage: #f4f0ea;
+  --media-bg: #ffffff; --media-blend: normal;
+  --weave: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2716%27%20height%3D%2716%27%3E%3Cg%20fill%3D%27rgb%28120%2C92%2C62%29%27%3E%3Crect%20x%3D%271%27%20y%3D%272%27%20width%3D%276%27%20height%3D%274%27%20rx%3D%272%27/%3E%3Crect%20x%3D%2710%27%20y%3D%271%27%20width%3D%274%27%20height%3D%276%27%20rx%3D%272%27/%3E%3Crect%20x%3D%272%27%20y%3D%279%27%20width%3D%274%27%20height%3D%276%27%20rx%3D%272%27/%3E%3Crect%20x%3D%279%27%20y%3D%2710%27%20width%3D%276%27%20height%3D%274%27%20rx%3D%272%27/%3E%3C/g%3E%3C/svg%3E");
+  --weave-o: .16;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+  /* steel blue */
+  --bg: #1f2b38; --surface: #263443; --fg: #eaeff4; --muted: #aebccb; --faint: #8395a8;
+  --line: #34465a; --accent: #9fc8ee; --accent-2: #5fcdbf; --pulse: #ff917f;
+  --chip-bg: #2b3a4a; --callout-bg: #22393f; --stage: #2b3a4a;
+  --shadow: 0 1px 2px rgba(6, 12, 20, .3), 0 10px 28px rgba(6, 12, 20, .35);
+  --weave: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2716%27%20height%3D%2716%27%3E%3Cg%20fill%3D%27rgb%28170%2C200%2C228%29%27%3E%3Crect%20x%3D%271%27%20y%3D%272%27%20width%3D%276%27%20height%3D%274%27%20rx%3D%272%27/%3E%3Crect%20x%3D%2710%27%20y%3D%271%27%20width%3D%274%27%20height%3D%276%27%20rx%3D%272%27/%3E%3Crect%20x%3D%272%27%20y%3D%279%27%20width%3D%274%27%20height%3D%276%27%20rx%3D%272%27/%3E%3Crect%20x%3D%279%27%20y%3D%2710%27%20width%3D%276%27%20height%3D%274%27%20rx%3D%272%27/%3E%3C/g%3E%3C/svg%3E"); --weave-o: .13;
+  --media-bg: #d8d9db; --media-blend: multiply;
+  color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  /* steel blue */
+  --bg: #1f2b38; --surface: #263443; --fg: #eaeff4; --muted: #aebccb; --faint: #8395a8;
+  --line: #34465a; --accent: #9fc8ee; --accent-2: #5fcdbf; --pulse: #ff917f;
+  --chip-bg: #2b3a4a; --callout-bg: #22393f; --stage: #2b3a4a;
+  --shadow: 0 1px 2px rgba(6, 12, 20, .3), 0 10px 28px rgba(6, 12, 20, .35);
+  --weave: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2716%27%20height%3D%2716%27%3E%3Cg%20fill%3D%27rgb%28170%2C200%2C228%29%27%3E%3Crect%20x%3D%271%27%20y%3D%272%27%20width%3D%276%27%20height%3D%274%27%20rx%3D%272%27/%3E%3Crect%20x%3D%2710%27%20y%3D%271%27%20width%3D%274%27%20height%3D%276%27%20rx%3D%272%27/%3E%3Crect%20x%3D%272%27%20y%3D%279%27%20width%3D%274%27%20height%3D%276%27%20rx%3D%272%27/%3E%3Crect%20x%3D%279%27%20y%3D%2710%27%20width%3D%276%27%20height%3D%274%27%20rx%3D%272%27/%3E%3C/g%3E%3C/svg%3E"); --weave-o: .13;
+  --media-bg: #d8d9db; --media-blend: multiply;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 400 16px/1.65 var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 30; background: var(--bg);
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.wrap {
+  max-width: 1040px; margin: 0 auto;
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+}
 
-    <!-- Link previews (LinkedIn, Slack, X, etc.) -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://colmanleung.com/">
-    <meta property="og:title" content="Ho Man Colman Leung">
-    <meta property="og:description" content="CS PhD candidate at Columbia University. Wearable and physiological sensing through hardware-software co-design.">
-    <meta property="og:image" content="https://colmanleung.com/img/og-image.jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="627">
-    <meta name="twitter:card" content="summary_large_image">
+/* ---------- Nav ---------- */
+.nav {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: saturate(1.4) blur(10px);
+  -webkit-backdrop-filter: saturate(1.4) blur(10px);
+  border-bottom: 1px solid transparent;
+  transition: border-color .25s ease, box-shadow .25s ease;
+}
+.nav.scrolled { border-bottom-color: var(--line); box-shadow: 0 6px 20px rgba(0, 0, 0, .06); }
+.nav .wrap { display: flex; align-items: center; gap: 20px; height: var(--nav-h); }
+.brand { font-family: var(--font-display); font-weight: 700; font-size: 18px; color: var(--fg); white-space: nowrap; letter-spacing: -.01em; }
+.brand:hover { text-decoration: none; }
+.nav-links { display: flex; gap: 4px; margin-left: auto; overflow-x: auto; scrollbar-width: none; }
+.nav-links::-webkit-scrollbar { display: none; }
+.nav-links a {
+  font-size: 14.5px; font-weight: 500; color: var(--muted);
+  padding: 6px 10px; border-radius: 8px; white-space: nowrap;
+  transition: color .2s ease, background-color .2s ease;
+}
+.nav-links a:hover { color: var(--fg); background: var(--chip-bg); text-decoration: none; }
+.nav-links a[aria-current="true"] { color: var(--accent); }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font: 600 14.5px/1 var(--font-body);
+  padding: 11px 16px; border-radius: 10px;
+  border: 1px solid var(--line); background: var(--surface); color: var(--fg);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, background-color .2s ease;
+}
+.btn:hover { text-decoration: none; transform: translateY(-1px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--accent) 35%, var(--line)); }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+.btn-primary:hover { border-color: var(--accent); }
+.nav .btn { padding: 8px 14px; flex: none; }
+.theme-toggle {
+  flex: none; width: 36px; height: 36px; display: grid; place-items: center; cursor: pointer;
+  border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--muted);
+  transition: color .2s ease, border-color .2s ease, transform .2s ease;
+}
+.theme-toggle:hover { color: var(--fg); border-color: color-mix(in srgb, var(--accent) 35%, var(--line)); }
+.theme-toggle svg { width: 18px; height: 18px; }
+.theme-toggle .moon { display: none; }
+.is-dark .theme-toggle .sun { display: none; }
+.is-dark .theme-toggle .moon { display: block; }
+.btn svg { width: 16px; height: 16px; flex: none; }
 
-    <!-- favicon -->
-    <link href="favicon.svg" rel=icon>
+/* ---------- Hero ---------- */
+.hero { padding-block: 56px 8px; position: relative; isolation: isolate; }
+/* Faint plain-weave texture, like the fabric the sensors live in. */
+.hero::before {
+  content: ""; position: absolute; z-index: -1; inset: 0 0 -40px;
+  background-image: var(--weave); background-size: 16px 16px; opacity: var(--weave-o);
+  -webkit-mask-image: radial-gradient(ellipse 60% 85% at 95% 20%, #000 10%, transparent 75%);
+  mask-image: radial-gradient(ellipse 60% 85% at 95% 20%, #000 10%, transparent 75%);
+  pointer-events: none;
+}
+/* Text lines up with the page's left edge; the portrait sits on the right, level with the name. */
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 220px; gap: 0 48px; align-items: start; }
+/* Name, title and summary sit beside the photo; the job-market note and links span the full width. */
+.hero-text { display: contents; }
+.hero-id { grid-column: 1; grid-row: 1; min-width: 0; }
+.hero-text > :not(.hero-id) { grid-column: 1 / -1; }
+.hero-text > .summary { grid-column: 1; grid-row: 2; }
+.portrait {
+  grid-column: 2; grid-row: 1 / span 2; width: 220px; height: 220px; margin-top: 34px; border-radius: 28px; object-fit: cover; display: block;
+  box-shadow: var(--shadow);
+}
+.eyebrow { font-family: var(--font-mono); font-size: 13px; letter-spacing: .04em; color: var(--muted); margin-bottom: 10px; }
+.eyebrow.loc { display: inline-flex; align-items: center; gap: 6px; }
+.eyebrow.loc svg { color: var(--accent-2); flex: none; }
+.hero h1 { font-size: clamp(38px, 5.4vw, 56px); line-height: 1.02; font-weight: 700; letter-spacing: -.025em; }
+.hero .role { font-size: 19px; color: var(--muted); margin-top: 12px; }
+.hero .role a { font-weight: 500; }
+.summary { margin-top: 18px; max-width: 64ch; font-size: 17px; }
+.summary strong { font-weight: 600; }
+.callout {
+  margin-top: 26px;
+  padding: 14px 18px; border-radius: 0 10px 10px 0;
+  background: var(--callout-bg); border-left: 3px solid var(--accent-2);
+}
+.callout strong { font-weight: 600; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.contact-line { margin-top: 14px; font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+.contact-line span + span::before { content: "·"; margin: 0 10px; color: var(--faint); }
 
-    <!-- web-fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Hind:300,400,500,600,700" rel="stylesheet">
+.ecg-wrap { position: relative; margin-top: 40px; }
+.ecg { display: block; width: 100%; height: 56px; overflow: visible; }
+/* A brighter segment sweeps along the trace like a bedside monitor. */
+.ecg-glow { position: absolute; inset: 0; opacity: 0; }
+.ecg-glow path { stroke-width: 2.6; opacity: 1; filter: drop-shadow(0 0 4px var(--pulse)) drop-shadow(0 0 1px var(--pulse)); }
+.motion .ecg.ecg-glow {
+  -webkit-mask: linear-gradient(90deg, transparent, #000 80%, transparent) no-repeat;
+  mask: linear-gradient(90deg, transparent, #000 80%, transparent) no-repeat;
+  -webkit-mask-size: 16% 100%; mask-size: 16% 100%;
+  animation: sweep 4.8s linear 2.8s infinite;
+}
+@keyframes sweep {
+  0% { opacity: 1; -webkit-mask-position: -25% 0; mask-position: -25% 0; }
+  70% { opacity: 1; -webkit-mask-position: 125% 0; mask-position: 125% 0; }
+  70.1%, 100% { opacity: 0; -webkit-mask-position: 125% 0; mask-position: 125% 0; }
+}
+.ecg path { fill: none; stroke: var(--pulse); stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; opacity: .85; }
+.motion .ecg { animation: wipe 2.6s cubic-bezier(.45, .05, .25, 1) .25s both; }
+@keyframes wipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
 
-    <!-- font-awesome -->
-    <link href="css/font-awesome.min.css" rel="stylesheet">
+.motion .portrait, .motion .hero-text > * { animation: rise .7s cubic-bezier(.2, .7, .2, 1) both; }
+.motion .hero-text > .summary { animation-delay: .06s; }
+.motion .hero-text > .callout, .motion .hero-text > .actions { animation-delay: .12s; }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+/* ---------- Sections ---------- */
+section.block { position: relative; padding-block: 56px; scroll-margin-top: calc(var(--nav-h) + env(safe-area-inset-top, 0px)); }
+/* Section dividers: a plain hairline. As you scroll, a red dot travels along it,
+   tracing a short stretch of ECG behind it (drawn by the script below). */
+section.block::before {
+  content: ""; position: absolute; top: 0; height: 1px; background: var(--line); pointer-events: none;
+  left: max(20px, env(safe-area-inset-left, 0px), calc((100% - 1000px) / 2));
+  right: max(20px, env(safe-area-inset-right, 0px), calc((100% - 1000px) / 2));
+}
+section.block:first-of-type::before { display: none; }
+.beat-line {
+  position: absolute; top: -24px; height: 40px; pointer-events: none; overflow: visible;
+  left: max(20px, env(safe-area-inset-left, 0px), calc((100% - 1000px) / 2));
+  width: calc(100% - 2 * max(20px, env(safe-area-inset-left, 0px), calc((100% - 1000px) / 2)));
+}
+.beat-line .tr { fill: none; stroke: var(--pulse); stroke-width: 1.8; stroke-linejoin: round; stroke-linecap: round; }
+.beat-line .dot { fill: var(--pulse); filter: drop-shadow(0 0 4px var(--pulse)); }
+@keyframes draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.block-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 28px; }
+.block-head h2 { font-size: 30px; font-weight: 700; letter-spacing: -.015em; }
+.block-head .note { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+.motion .reveal.waiting { opacity: 0; }
+.motion .reveal.waiting.in { opacity: 1; animation: rise .6s cubic-bezier(.2, .7, .2, 1) both; }
 
-    <!-- Style CSS -->
-    <link href="css/style.css" rel="stylesheet">
-	
-	<!-- Slider CSS-->
-	<link href="css/responsiveslides.css" rel="stylesheet">
-	
-	<!-- PopUp CSS -->
-	<link href="css/magnific-popup.css" rel="stylesheet">
+/* Research cards */
+.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.card {
+  display: flex; flex-direction: column;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden;
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+/* On hover a stitch is sewn around the text: along the image edge, down the right side, then across the bottom. */
+.card-body { position: relative; }
+.card-body::before, .card-body::after {
+  content: ""; position: absolute; pointer-events: none; opacity: 0;
+  --stitch: 1.5px dashed color-mix(in srgb, var(--accent) 60%, transparent);
+}
+.card-body::before { top: 6px; left: 7px; right: 7px; bottom: 19px; border-top: var(--stitch); border-right: var(--stitch); border-top-right-radius: 8px; }
+.card-body::after { left: 7px; right: 7px; bottom: 7px; height: 12px; border-bottom: var(--stitch); border-right: var(--stitch); border-bottom-right-radius: 10px; }
+.card:hover .card-body::before, .card:hover .card-body::after { opacity: 1; }
+.motion .card:hover .card-body::before { animation: sew-a .55s linear both; }
+.motion .card:hover .card-body::after { animation: sew-b .3s linear .55s both; }
+@keyframes sew-a {
+  0% { clip-path: inset(0 100% calc(100% - 3px) 0); }
+  45% { clip-path: inset(0 0 calc(100% - 3px) 0); }
+  100% { clip-path: inset(0 0 0 0); }
+}
+@keyframes sew-b { from { clip-path: inset(0 0 0 100%); } to { clip-path: inset(0 0 0 0); } }
+.card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--accent) 25%, var(--line)); }
+.card-media { background: var(--media-bg); height: 120px; padding: 8px 0; border-bottom: 1px solid var(--line); overflow: hidden; }
+.card-media img { width: 100%; height: 100%; object-fit: contain; display: block; mix-blend-mode: var(--media-blend); transition: transform .5s ease; }
+.card:hover .card-media img { transform: scale(1.03); }
+.card-body { display: flex; flex-direction: column; gap: 8px; padding: 18px 20px 20px; flex: 1; }
+.card h3 { font-size: 19px; font-weight: 600; line-height: 1.25; letter-spacing: -.005em; }
+.venue { font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+.card p { font-size: 15px; color: var(--fg); }
+/* The one line a skimmer should read: the headline result, or my role. */
+.card .result {
+  font-size: 14.5px; font-weight: 600; line-height: 1.45; margin-top: 2px;
+  padding-left: 11px; border-left: 2px solid var(--accent-2);
+}
+.card .result .lbl {
+  display: block; font: 500 11.5px/1.6 var(--font-mono); letter-spacing: .04em; text-transform: uppercase; color: var(--muted);
+}
+.card .chips { margin-top: auto; padding-top: 8px; }
 
-	<!-- Academicons -->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  font: 500 12.5px/1 var(--font-body); color: var(--fg);
+  padding: 7px 11px; border-radius: 999px; background: var(--chip-bg); border: 1px solid var(--line);
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+}
+.chip { display: inline-flex; align-items: center; gap: 5px; }
+.chip[href$=".pdf"]::before {
+  content: ""; width: 12px; height: 12px; flex: none; background: currentColor; opacity: .7;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27%23000%27%20stroke-width%3D%272.2%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cpath%20d%3D%27M14%203H7a2%202%200%200%200-2%202v14a2%202%200%200%200%202%202h10a2%202%200%200%200%202-2V8z%27/%3E%3Cpath%20d%3D%27M14%203v5h5%27/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27%23000%27%20stroke-width%3D%272.2%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cpath%20d%3D%27M14%203H7a2%202%200%200%200-2%202v14a2%202%200%200%200%202%202h10a2%202%200%200%200%202-2V8z%27/%3E%3Cpath%20d%3D%27M14%203v5h5%27/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.chip[href^="http"]:not([href$=".pdf"])::after { content: "\2197"; font-size: 11px; opacity: .7; }
+.chip:hover { background: var(--accent-2); border-color: var(--accent-2); color: var(--surface); text-decoration: none; }
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+/* Rail lists: publications, experience, education */
+/* Timeline: a thin vertical line with a dot per entry; the date sits above each title. */
+.rail { position: relative; padding-left: 30px; }
+.rail::before {
+  content: ""; position: absolute; left: 5px; top: 8px; bottom: 6px; width: 1.5px;
+  background: linear-gradient(var(--line), var(--line)) no-repeat; border-radius: 2px;
+}
+.rail > .when {
+  position: relative; font-family: var(--font-mono); font-size: 12.5px; letter-spacing: .02em;
+  color: var(--muted); font-variant-numeric: tabular-nums; margin-bottom: 4px; line-height: 1.5;
+}
+.rail > .when::before {
+  content: ""; position: absolute; left: -30px; top: 50%; width: 12px; height: 12px; margin-top: -6px;
+  border-radius: 50%; background: var(--bg); border: 2px solid var(--accent-2); box-sizing: border-box;
+}
+/* Current role: a filled green dot with a soft glow and a slow "live" ring. */
+.rail > .when.now::before {
+  background: var(--accent-2); border-color: var(--accent-2);
+  box-shadow: 0 0 6px 1px color-mix(in srgb, var(--accent-2) 70%, transparent), 0 0 0 4px color-mix(in srgb, var(--accent-2) 20%, transparent);
+}
+.rail > .when.now::after {
+  content: ""; position: absolute; left: -30px; top: 50%; width: 12px; height: 12px; margin-top: -6px;
+  border-radius: 50%; border: 2px solid var(--accent-2); box-sizing: border-box; opacity: 0; pointer-events: none;
+}
+.motion .rail > .when.now::after { animation: live 2.6s ease-out infinite; }
+@keyframes live { 0% { transform: scale(1); opacity: .7; } 70%, 100% { transform: scale(2.6); opacity: 0; } }
+.rail > .when span + span { margin-left: .45em; }
+.rail > .what { padding-bottom: 34px; min-width: 0; }
+.rail > .what:last-child { padding-bottom: 0; }
+.rail .group { display: grid; gap: 22px; }
+.pub h3, .entry h3 { font-family: var(--font-body); font-size: 17px; font-weight: 600; line-height: 1.4; }
+.pub h3 a { color: var(--fg); }
+.pub h3 a:hover { color: var(--accent); }
+.authors { color: var(--muted); font-size: 15px; margin-top: 3px; }
+.authors .me { color: var(--fg); font-weight: 600; text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--accent-2) 60%, transparent); text-underline-offset: 3px; }
+.pub .venue { margin-top: 4px; }
+.pub .chips { margin-top: 10px; }
+.entry .org { color: var(--muted); font-size: 15.5px; }
+.entry ul { margin: 10px 0 0; padding-left: 18px; }
+.entry li { margin-top: 6px; font-size: 15.5px; }
+.entry li::marker { color: var(--accent-2); }
+.entry p { margin-top: 8px; font-size: 15.5px; }
+
+/* Two-up: teaching and service */
+.two-up { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; align-items: stretch; }
+/* Teaching and Service each sit in a rounded panel, matching the research cards. */
+.two-up > div { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 22px 24px 24px; }
+.two-up h3 { font-size: 20px; font-weight: 600; margin-bottom: 14px; }
+.plain { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.plain .t { font-weight: 600; }
+.plain .s { color: var(--muted); font-size: 15px; }
+.plain .d { font-family: var(--font-mono); font-size: 12.5px; color: var(--faint); }
+
+/* Skills */
+.skills { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 12px 28px; margin: 0; }
+.skills dt { font-weight: 600; }
+.skills dd { margin: 0; color: var(--muted); }
+
+/* Footer */
+footer { border-top: 1px solid var(--line); padding-block: 36px 48px; }
+.foot { display: flex; flex-wrap: wrap; gap: 24px 40px; justify-content: space-between; align-items: flex-start; }
+.foot p { color: var(--muted); font-size: 14.5px; max-width: 60ch; }
+.foot .meta { font-family: var(--font-mono); font-size: 12.5px; color: var(--faint); }
+.visitors { max-width: 280px; }
+
+
+/* Design gallery */
+.lede { max-width: 64ch; color: var(--muted); margin-bottom: 24px; }
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 18px; }
+.gallery[hidden] { display: none; }
+.tile {
+  display: flex; flex-direction: column; gap: 4px; text-align: left; cursor: pointer;
+  padding: 0 0 12px; border: 0; background: none; font: inherit; color: inherit;
+}
+.tile img {
+  width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px; display: block; margin-bottom: 8px;
+  border: 1px solid var(--line); transition: transform .3s ease, box-shadow .3s ease;
+}
+.tile:hover img { transform: translateY(-3px); box-shadow: var(--shadow); }
+.tile-t { font-weight: 600; font-size: 15.5px; line-height: 1.3; }
+.tile-s { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.linkish { font: inherit; font-weight: 600; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer; }
+.linkish:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+.disclosure {
+  display: inline-flex; align-items: center; gap: 10px; cursor: pointer;
+  font: 600 15px/1 var(--font-body); color: var(--fg);
+  padding: 11px 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface);
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.disclosure:hover { border-color: color-mix(in srgb, var(--accent) 35%, var(--line)); box-shadow: var(--shadow); }
+.disclosure .count { font: 400 12.5px/1 var(--font-mono); color: var(--muted); }
+.disclosure svg { width: 18px; height: 18px; color: var(--muted); transition: transform .25s ease; }
+.disclosure[aria-expanded="true"] svg { transform: rotate(180deg); }
+#portfolio { margin-top: 22px; }
+.motion #portfolio:not([hidden]) .tile { animation: rise .45s cubic-bezier(.2, .7, .2, 1) both; }
+.motion #portfolio:not([hidden]) .tile:nth-child(2) { animation-delay: .04s; }
+.motion #portfolio:not([hidden]) .tile:nth-child(3) { animation-delay: .08s; }
+.motion #portfolio:not([hidden]) .tile:nth-child(4) { animation-delay: .12s; }
+.motion #portfolio:not([hidden]) .tile:nth-child(5) { animation-delay: .16s; }
+.motion #portfolio:not([hidden]) .tile:nth-child(6) { animation-delay: .2s; }
+.motion #portfolio:not([hidden]) .tile:nth-child(7) { animation-delay: .24s; }
+
+/* Lightbox */
+.lightbox { border: 0; padding: 0; border-radius: 16px; width: min(960px, calc(100vw - 32px)); max-height: calc(100vh - 32px); background: var(--surface); color: var(--fg); box-shadow: 0 30px 80px rgba(16, 24, 40, .35); }
+.lightbox::backdrop { background: rgba(18, 24, 36, .62); backdrop-filter: blur(3px); }
+.lightbox[open] { animation: pop .25s cubic-bezier(.2, .7, .2, 1); }
+@keyframes pop { from { opacity: 0; transform: translateY(10px) scale(.985); } to { opacity: 1; transform: none; } }
+.lb-inner { position: relative; display: flex; flex-direction: column; max-height: calc(100vh - 32px); }
+.lb-stage { position: relative; background: var(--stage); display: flex; align-items: center; justify-content: center; min-height: 200px; }
+.lb-stage img { display: block; max-width: 100%; max-height: 62vh; width: auto; height: auto; }
+.lb-nav, .lb-close {
+  position: absolute; border: 0; cursor: pointer; font: 400 26px/1 var(--font-body);
+  width: 40px; height: 40px; border-radius: 999px; background: rgba(255, 255, 255, .92); color: #20263a;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .15); display: grid; place-items: center;
+}
+.lb-nav { top: 50%; transform: translateY(-50%); }
+.lb-prev { left: 12px; } .lb-next { right: 12px; }
+.lb-close { top: 12px; right: 12px; z-index: 2; }
+.lb-nav[hidden] { display: none; }
+.lb-caption { padding: 18px 22px 22px; overflow-y: auto; }
+.lb-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.lb-head h3 { font-size: 20px; font-weight: 600; }
+.lb-count, .lb-meta { font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); }
+.lb-meta { margin: 2px 0 8px; }
+.visitors .meta { margin-bottom: 8px; }
+.vm-placeholder { width: 260px; height: 130px; border: 1px dashed var(--line); border-radius: 10px; display: grid; place-items: center; text-align: center; padding: 12px; font-size: 13px; color: var(--faint); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .cards { grid-template-columns: minmax(0, 1fr); }
+  .card { flex-direction: row; }
+  .card-media { flex: 0 0 30%; height: auto; border-bottom: 0; border-right: 1px solid var(--line); }
+}
+@media (max-width: 720px) {
+  .nav-links { display: none; }
+  .theme-toggle { margin-left: auto; }
+  .hero { padding-block: 32px 4px; }
+  /* Phone: photo sits beside the name and title; the rest runs full width below. */
+  .hero-grid { grid-template-columns: minmax(0, 1fr) 96px; gap: 0 16px; align-items: center; }
+  .hero-text > .summary { grid-column: 1 / -1; grid-row: auto; }
+  .portrait { grid-column: 2; grid-row: 1; width: 96px; height: 96px; margin-top: 0; border-radius: 20px; }
+  .hero h1 { font-size: 31px; }
+  .hero .role { font-size: 16px; margin-top: 8px; }
+  .eyebrow { margin-bottom: 6px; }
+  .card { flex-direction: column; }
+  .card-media { flex: none; height: 115px; border-right: 0; border-bottom: 1px solid var(--line); }
+  .rail { padding-left: 26px; }
+  .rail > .when::before, .rail > .when.now::after { left: -26px; }
+  .two-up { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .two-up > div { padding: 18px 18px 20px; }
+  .skills { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .skills dd { margin-bottom: 10px; }
+  section.block { padding-block: 40px; }
+  .block-head h2 { font-size: 26px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
 </head>
-<body id="page-top" data-spy="scroll" data-target=".navbar">
-<div id="main-wrapper">
-	
-<!-- Page Preloader 
-<div id="preloader">
-    <div id="status">
-        <div class="status-mes"></div>
+<body>
+<header class="nav" id="top">
+  <div class="wrap">
+    <a class="brand" href="#top">Colman Leung</a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#research">Research</a>
+      <a href="#publications">Publications</a>
+      <a href="#experience">Experience</a>
+      <a href="#education">Education</a>
+      <a href="#teaching">Teaching &amp; Service</a>
+    </nav>
+    <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Switch to dark mode" title="Switch theme">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+    <a class="btn btn-primary" href="./doc/colman-leung-resume.pdf" target="_blank" rel="noopener">Resume</a>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <img class="portrait" src="img/profile-400.jpg" alt="Portrait of Colman Leung" width="184" height="184">
+        <div class="hero-text">
+          <div class="hero-id">
+          <p class="eyebrow loc"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>New York City, NY, USA</p>
+          <h1>Ho Man Colman Leung</h1>
+          <p class="role">PhD candidate in Computer Science at <a href="https://www.columbia.edu" target="_blank" rel="noopener">Columbia University</a>, <a href="https://mobilex.cs.columbia.edu/" target="_blank" rel="noopener">Mobile X Lab</a></p>
+          </div>
+          <p class="summary">I build wearable systems that measure the human body, from custom sensors and circuit boards to signal processing, machine learning and human-subject studies. My research focuses on <strong>physiological sensing</strong> for health and human-computer interaction, through <strong>hardware–software co-design</strong>. I am advised by <a href="https://www.cs.columbia.edu/~xia/" target="_blank" rel="noopener">Prof. Xia Zhou</a> in the Mobile X Lab at Columbia University.</p>
+          <div class="callout"><strong>I am on the job market for industry research scientist roles starting in 2027.</strong> Feel free to reach out on LinkedIn or by email.</div>
+          <div class="actions">
+            <a class="btn btn-primary" href="./doc/colman-leung-resume.pdf" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>
+              Resume</a>
+            <a class="btn" href="https://www.linkedin.com/in/ho-man-colman-leung" target="_blank" rel="noopener">LinkedIn</a>
+            <a class="btn" href="https://scholar.google.com/citations?user=XdPyv6MAAAAJ" target="_blank" rel="noopener">Google Scholar</a>
+            <a class="btn" href="mailto:colman.leung@columbia.edu">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+              colman.leung@columbia.edu</a>
+          </div>
+        </div>
+      </div>
+      <div class="ecg-wrap" aria-hidden="true">
+        <svg class="ecg" viewBox="0 0 1000 56" preserveAspectRatio="none"><path class="trace" d="M0.0,34.0 L12.5,34.0 L17.5,30.0 L22.5,34.0 L32.5,34.0 L35.0,37.0 L38.8,8.0 L42.5,42.0 L46.2,34.0 L60.0,34.0 L70.0,27.0 L80.0,34.0 L125.0,34.0 L125.0,34.0 L137.5,34.0 L142.5,30.0 L147.5,34.0 L157.5,34.0 L160.0,37.0 L163.8,8.0 L167.5,42.0 L171.2,34.0 L185.0,34.0 L195.0,27.0 L205.0,34.0 L250.0,34.0 L250.0,34.0 L262.5,34.0 L267.5,30.0 L272.5,34.0 L282.5,34.0 L285.0,37.0 L288.8,8.0 L292.5,42.0 L296.2,34.0 L310.0,34.0 L320.0,27.0 L330.0,34.0 L375.0,34.0 L375.0,34.0 L387.5,34.0 L392.5,30.0 L397.5,34.0 L407.5,34.0 L410.0,37.0 L413.8,8.0 L417.5,42.0 L421.2,34.0 L435.0,34.0 L445.0,27.0 L455.0,34.0 L500.0,34.0 L500.0,34.0 L512.5,34.0 L517.5,30.0 L522.5,34.0 L532.5,34.0 L535.0,37.0 L538.8,8.0 L542.5,42.0 L546.2,34.0 L560.0,34.0 L570.0,27.0 L580.0,34.0 L625.0,34.0 L625.0,34.0 L637.5,34.0 L642.5,30.0 L647.5,34.0 L657.5,34.0 L660.0,37.0 L663.8,8.0 L667.5,42.0 L671.2,34.0 L685.0,34.0 L695.0,27.0 L705.0,34.0 L750.0,34.0 L750.0,34.0 L762.5,34.0 L767.5,30.0 L772.5,34.0 L782.5,34.0 L785.0,37.0 L788.8,8.0 L792.5,42.0 L796.2,34.0 L810.0,34.0 L820.0,27.0 L830.0,34.0 L875.0,34.0 L875.0,34.0 L887.5,34.0 L892.5,30.0 L897.5,34.0 L907.5,34.0 L910.0,37.0 L913.8,8.0 L917.5,42.0 L921.2,34.0 L935.0,34.0 L945.0,27.0 L955.0,34.0 L1000.0,34.0"/></svg>
+        <svg class="ecg ecg-glow" viewBox="0 0 1000 56" preserveAspectRatio="none"><path d="M0.0,34.0 L12.5,34.0 L17.5,30.0 L22.5,34.0 L32.5,34.0 L35.0,37.0 L38.8,8.0 L42.5,42.0 L46.2,34.0 L60.0,34.0 L70.0,27.0 L80.0,34.0 L125.0,34.0 L125.0,34.0 L137.5,34.0 L142.5,30.0 L147.5,34.0 L157.5,34.0 L160.0,37.0 L163.8,8.0 L167.5,42.0 L171.2,34.0 L185.0,34.0 L195.0,27.0 L205.0,34.0 L250.0,34.0 L250.0,34.0 L262.5,34.0 L267.5,30.0 L272.5,34.0 L282.5,34.0 L285.0,37.0 L288.8,8.0 L292.5,42.0 L296.2,34.0 L310.0,34.0 L320.0,27.0 L330.0,34.0 L375.0,34.0 L375.0,34.0 L387.5,34.0 L392.5,30.0 L397.5,34.0 L407.5,34.0 L410.0,37.0 L413.8,8.0 L417.5,42.0 L421.2,34.0 L435.0,34.0 L445.0,27.0 L455.0,34.0 L500.0,34.0 L500.0,34.0 L512.5,34.0 L517.5,30.0 L522.5,34.0 L532.5,34.0 L535.0,37.0 L538.8,8.0 L542.5,42.0 L546.2,34.0 L560.0,34.0 L570.0,27.0 L580.0,34.0 L625.0,34.0 L625.0,34.0 L637.5,34.0 L642.5,30.0 L647.5,34.0 L657.5,34.0 L660.0,37.0 L663.8,8.0 L667.5,42.0 L671.2,34.0 L685.0,34.0 L695.0,27.0 L705.0,34.0 L750.0,34.0 L750.0,34.0 L762.5,34.0 L767.5,30.0 L772.5,34.0 L782.5,34.0 L785.0,37.0 L788.8,8.0 L792.5,42.0 L796.2,34.0 L810.0,34.0 L820.0,27.0 L830.0,34.0 L875.0,34.0 L875.0,34.0 L887.5,34.0 L892.5,30.0 L897.5,34.0 L907.5,34.0 L910.0,37.0 L913.8,8.0 L917.5,42.0 L921.2,34.0 L935.0,34.0 L945.0,27.0 L955.0,34.0 L1000.0,34.0"/></svg>
+      </div>
     </div>
-</div>-->
+  </div>
 
-<div class="columns-block container">
-<div class="left-col-block blocks">
-    <header class="header theiaStickySidebar">
-        <div class="profile-img">
-            <img src="img/profile.jpg" class="img-responsive" alt=""/>
-        </div>
-        <div class="content">
-            <h1>Ho Man Colman Leung</h1>
-            <!--<span class="lead">MPhil. Student</span>-->
-
-            <div class="about-text">
-				<address>
-					<strong>Location</strong><br>
-					New York City
-				</address>
-				
-				<address>
-					<strong>E-mail</strong><br>
-					<a href="#" class="parser" data-name="colman" data-school="leung" data-domain="columbia" data-tld="edu" onclick="window.location.href = 'mailto:' + this.dataset.name + '.' + this.dataset.school + '@' + this.dataset.domain + '.' + this.dataset.tld; return false;"></a>
-				</address>
-			</div>
-            <ul class="icon-list">
-                <li><a href="https://www.linkedin.com/in/ho-man-colman-leung" target="_blank"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
-				<li><a href="https://scholar.google.com/citations?user=XdPyv6MAAAAJ" target="_blank"><i class="fa fa-graduation-cap" aria-hidden="true"></i></a></li>
-				<li><a href="./doc/colman-leung-resume.pdf" target="_blank"><b>Resume</b></a></li>
-				<!-- <li><a href="./doc/colman-leung-cv.pdf" target="_blank"><b>CV</b></a></li> -->
-            </ul>
-			
-        </div>
-
-    </header>
-    <!-- .header-->
-</div>
-<!-- .left-col-block -->
-
-
-
-<div class="right-col-block blocks">
-<div class="theiaStickySidebar">
-<section class="section-wrapper section-about">
-	<div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="section-title"><h2>About Me</h2></div>
+  <section class="block" id="research">
+    <div class="wrap">
+      <div class="block-head"><h2>Research</h2></div>
+      <div class="cards">
+        <article class="card reveal">
+          <div class="card-media"><img src="img/research/ecg-shirt.jpg" alt="Illustration of a loose T-shirt with ECG sensors on the upper back" loading="lazy"></div>
+          <div class="card-body">
+            <h3>Continuous ECG Monitoring with a Loose T&#8209;Shirt</h3>
+            <p class="venue">MobiDx 2026 · MobiCom workshop</p>
+            <p>Loose clothing was long considered unusable for ECG because the fabric moves with the body. The shirt's own weight and a little sweat hold a thin kirigami sensor to the back, and a hybrid electrode senses motion so it can be filtered out.</p>
+            <p class="result">92.7% of full waveforms at rest · 84.5% of heartbeats while walking</p>
+            <div class="chips">
+              <a class="chip" href="./doc/2026-tshirt-paper.pdf" target="_blank" rel="noopener">PDF · Paper</a>
+              <a class="chip" href="https://doi.org/10.1145/3842657.3842785" target="_blank" rel="noopener">ACM</a>
             </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <p>
-                    I am a CS PhD candidate at <a href="http://columbia.edu" target="_blank">Columbia University</a>, working with <a href="https://www.cs.columbia.edu/~xia/" target="_blank">Prof. Xia Zhou</a> at the <a href="https://mobilex.cs.columbia.edu/" target="_blank">Mobile X Lab</a>.
-                </p>
-                <p class="job-callout">
-                    <b>I am on the job market for industry research scientist roles starting in 2027.</b> Feel free to reach out on <a href="https://www.linkedin.com/in/ho-man-colman-leung" target="_blank">LinkedIn</a> or by email, and see my <a href="./doc/colman-leung-resume.pdf" target="_blank">resume</a>.
-                </p>
-                <p>
-                    My research focuses on <b>physiological sensing</b> for health and human-computer interaction. Through <b>hardware–software co-design</b>, I build wearable systems end to end: custom sensors and circuit boards, signal processing, machine learning, and human-subject studies. Recent work includes continuous ECG monitoring with a loose T-shirt and a 363-day clinical study of a noninvasive optical glucose sensor.
-				</p>
+          </div>
+        </article>
+        <article class="card reveal">
+          <div class="card-media"><img src="img/research/glucose.jpg" alt="Illustration of a hand resting on a portable optical glucose sensor, shown in cutaway" loading="lazy"></div>
+          <div class="card-body">
+            <h3>Noninvasive Optical Glucose Sensing</h3>
+            <p class="venue">Scientific Reports 2025 · Sensors 2023 · UbiComp 2022</p>
+            <p>A portable box that estimates glucose levels from how the palm rotates polarized light, with a light trap that rejects stray reflections. Tested in a 363-day home study with 30 participants, run with the Barbara Davis Center for Diabetes.</p>
+            <p class="result">Over 95% of predictions clinically accurate or acceptable</p>
+            <div class="chips">
+              <a class="chip" href="./doc/2025-clinical-paper.pdf" target="_blank" rel="noopener">PDF · Clinical Study</a>
+              <a class="chip" href="./doc/2023-review-paper.pdf" target="_blank" rel="noopener">PDF · Review</a>
+              <a class="chip" href="./doc/2022-glucose-paper.pdf" target="_blank" rel="noopener">PDF · Poster Paper</a>
             </div>
-        </div>
+          </div>
+        </article>
+        <article class="card reveal">
+          <div class="card-media"><img src="img/research/pillow.jpg" alt="Illustration of a person sleeping on a pillow with fabric sensors under the neck" loading="lazy"></div>
+          <div class="card-body">
+            <h3>Computational Fabrics for Health</h3>
+            <p class="venue">IMWUT 2025 · MobiSys 2024 · ICORR 2025</p>
+            <p>Sensors made from conductive fabric and built into everyday textiles: a pillowcase that tracks heart rate, breathing and sleep posture, Joey for kangaroo mother care of newborns, and a fabric sensor for hand-muscle rehabilitation.</p>
+            <p class="result"><span class="lbl">My role</span> Built the pillow's sensing prototype, developed Joey's Android app, advised on the hand-muscle sensors</p>
+            <div class="chips">
+              <a class="chip" href="./doc/2025-pillow-paper.pdf" target="_blank" rel="noopener">PDF · Pillow</a>
+              <a class="chip" href="./doc/2024-joey-paper.pdf" target="_blank" rel="noopener">PDF · Joey</a>
+              <a class="chip" href="./doc/2025-fabric-paper.pdf" target="_blank" rel="noopener">PDF · Hand Muscle</a>
+            </div>
+          </div>
+        </article>
+      </div>
     </div>
-</section>
-<section class="section-wrapper section-research gray-bg">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="section-title"><h2>Research</h2></div>
-            </div>
+  </section>
+
+  <section class="block" id="publications">
+    <div class="wrap">
+      <div class="block-head"><h2>Publications</h2><a class="note" href="https://scholar.google.com/citations?user=XdPyv6MAAAAJ" target="_blank" rel="noopener">Google Scholar ↗</a></div>
+      <div class="rail rail-years">
+        <div class="when">2026</div>
+        <div class="what reveal">
+          <div class="pub">
+            <h3><a href="./doc/2026-tshirt-paper.pdf" target="_blank" rel="noopener">Continuous Electrocardiogram Monitoring with a Loose T-Shirt</a></h3>
+            <p class="authors"><span class="me">Ho Man Colman Leung</span>, Kyle Tong, Ming Gong, Nam Bui, Xia Zhou</p>
+            <p class="venue" title="ACM MobiDx 2026 (Hot Topics in Mobile and Wireless Systems for Health), co-located with ACM MobiCom 2026">MobiDx 2026 · MobiCom workshop · Presented in Austin, TX</p>
+            <div class="chips"><a class="chip" href="./doc/2026-tshirt-paper.pdf" target="_blank" rel="noopener">PDF</a><a class="chip" href="https://doi.org/10.1145/3842657.3842785" target="_blank" rel="noopener">ACM</a></div>
+          </div>
         </div>
-        <!-- .row -->
-        <div class="row">
-            <div class="col-md-12">
-                <div class="research-item">
-                    <div class="research-thumb"><img src="img/research/ecg-shirt.jpg" alt="Illustration of a loose T-shirt with ECG sensors on the upper back" loading="lazy"></div>
-                    <div class="research-text">
-                        <h3>Continuous ECG Monitoring with a Loose T&#8209;Shirt</h3>
-                        <small>MobiDx 2026</small>
-                        <p>Loose clothing is the most comfortable wearable, but it was long considered unusable for ECG because the fabric moves with the body. Here, the shirt's own weight presses a thin kirigami sensor against the back, sweat forms a gel-free anchor to the skin, and a hybrid electrode senses motion so it can be filtered out. In a pilot study, it captured 92.7% of full ECG waveforms at rest and 84.5% of heartbeats while walking.</p>
-                        <div class="pub-badges">
-                            <a href="./doc/2026-tshirt-paper.pdf" target="_blank">Paper</a>
-                            <a href="https://doi.org/10.1145/3842657.3842785" target="_blank">ACM</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="research-item">
-                    <div class="research-thumb"><img src="img/research/glucose.jpg" alt="Illustration of a hand resting on a portable optical glucose sensor, shown in cutaway" loading="lazy"></div>
-                    <div class="research-text">
-                        <h3>Noninvasive Optical Glucose Sensing</h3>
-                        <small>Scientific Reports 2025 &bull; Sensors 2023 &bull; UbiComp 2022</small>
-                        <p>A portable box that estimates glucose levels from how the palm rotates polarized light, with a light trap that rejects unwanted reflections. In a 363-day home study with 30 participants, run with the Barbara Davis Center for Diabetes, over 95% of predictions were clinically accurate or acceptable.</p>
-                        <div class="pub-badges">
-                            <a href="./doc/2025-clinical-paper.pdf" target="_blank">Clinical Study</a>
-                            <a href="./doc/2023-review-paper.pdf" target="_blank">Review</a>
-                            <a href="./doc/2022-glucose-paper.pdf" target="_blank">Poster Paper</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="research-item">
-                    <div class="research-thumb"><img src="img/research/pillow.jpg" alt="Illustration of a person sleeping on a pillow with fabric sensors under the neck" loading="lazy"></div>
-                    <div class="research-text">
-                        <h3>Computational Fabrics for Health</h3>
-                        <small>IMWUT 2025 &bull; MobiSys 2024 &bull; ICORR 2025</small>
-                        <p>Sensors made from conductive fabric and built into everyday textiles. A pillowcase that tracks heart rate, breathing, sleep posture and movement through the night (I built the sensing prototype), Joey, which supports kangaroo mother care for newborns (I developed the Android app), and a fabric sensor for hand-muscle activity in rehabilitation (I advised on building the sensors).</p>
-                        <div class="pub-badges">
-                            <a href="./doc/2025-pillow-paper.pdf" target="_blank">Pillow</a>
-                            <a href="./doc/2024-joey-paper.pdf" target="_blank">Joey</a>
-                            <a href="./doc/2025-fabric-paper.pdf" target="_blank">Hand Muscle</a>
-                        </div>
-                    </div>
-                </div>
+
+        <div class="when">2025</div>
+        <div class="what reveal">
+          <div class="group">
+            <div class="pub">
+              <h3><a href="./doc/2025-clinical-paper.pdf" target="_blank" rel="noopener">Clinical Evaluation of a Polarization-based Optical Noninvasive Glucose Sensing System</a></h3>
+              <p class="authors"><span class="me">Ho Man Colman Leung</span>, Chengyue Gong, Luke Geiser, Emily E. Fivekiller, Nam Bui, Tam Vu, Temiloluwa Prioleau, Gregory P. Forlenza, Qiang Liu, Xia Zhou</p>
+              <p class="venue" title="Scientific Reports 15, 8877 (2025)">Scientific Reports 2025</p>
+              <div class="chips"><a class="chip" href="./doc/2025-clinical-paper.pdf" target="_blank" rel="noopener">PDF</a><a class="chip" href="https://doi.org/10.1038/s41598-025-92515-6" target="_blank" rel="noopener">Sci Rep</a></div>
             </div>
+            <div class="pub">
+              <h3><a href="./doc/2025-pillow-paper.pdf" target="_blank" rel="noopener">My Pillow Knows My Sleep: Sleep Monitoring with Computational Fabrics in the Pillowcase</a></h3>
+              <p class="authors">Qijia Shao, Junxiao Chen, <span class="me">Ho Man Colman Leung</span>, Meiqi Zhao, Ruoyu Xu, Jiting Liu, Lisa Maria DiSalvo García, Xiaofan Jiang, Marie-Pierre St-Onge, Xia Zhou</p>
+              <p class="venue" title="Proceedings of the ACM on Interactive, Mobile, Wearable and Ubiquitous Technologies (IMWUT) 9(3), 2025">IMWUT 2025</p>
+              <div class="chips"><a class="chip" href="./doc/2025-pillow-paper.pdf" target="_blank" rel="noopener">PDF</a><a class="chip" href="https://doi.org/10.1145/3749550" target="_blank" rel="noopener">ACM</a></div>
+            </div>
+            <div class="pub">
+              <h3><a href="./doc/2025-fabric-paper.pdf" target="_blank" rel="noopener">Fabric Sensing of Intrinsic Hand Muscle Activity</a></h3>
+              <p class="authors">Katelyn Lee, Runsheng Wang, Ava Chen, Lauren Winterbottom, <span class="me">Ho Man Colman Leung</span>, Lisa Maria DiSalvo, Iris Xu, Jingxi Xu, Dawn M. Nilsen, Joel Stein, Xia Zhou, Matei Ciocarlie</p>
+              <p class="venue" title="IEEE International Conference on Rehabilitation Robotics (ICORR), 2025">ICORR 2025</p>
+              <div class="chips"><a class="chip" href="./doc/2025-fabric-paper.pdf" target="_blank" rel="noopener">PDF</a><a class="chip" href="https://doi.org/10.1109/ICORR66766.2025.11062938" target="_blank" rel="noopener">IEEE</a></div>
+            </div>
+          </div>
         </div>
-        <!-- .row -->
+
+        <div class="when">2024</div>
+        <div class="what reveal">
+          <div class="pub">
+            <h3><a href="./doc/2024-joey-paper.pdf" target="_blank" rel="noopener">Joey: Supporting Kangaroo Mother Care with Computational Fabrics</a></h3>
+            <p class="authors">Qijia Shao, Jiting Liu, Emily Bejerano, <span class="me">Ho Man Colman Leung</span>, Jingping Nie, Xiaofan Jiang, Xia Zhou</p>
+            <p class="venue" title="ACM International Conference on Mobile Systems, Applications, and Services (MobiSys), 2024">MobiSys 2024</p>
+            <div class="chips"><a class="chip" href="./doc/2024-joey-paper.pdf" target="_blank" rel="noopener">PDF</a><a class="chip" href="https://doi.org/10.1145/3643832.3661867" target="_blank" rel="noopener">ACM</a></div>
+          </div>
+        </div>
+
+        <div class="when">2023</div>
+        <div class="what reveal">
+          <div class="group">
+            <div class="pub">
+              <h3><a href="./doc/2023-review-paper.pdf" target="_blank" rel="noopener">Noninvasive Glucose Sensing In Vivo</a></h3>
+              <p class="authors"><span class="me">Ho Man Colman Leung</span>, Gregory P. Forlenza, Temiloluwa O. Prioleau, Xia Zhou</p>
+              <p class="venue" title="Sensors 23(16), 7057 (2023)">Sensors 2023 · Review</p>
+              <div class="chips"><a class="chip" href="./doc/2023-review-paper.pdf" target="_blank" rel="noopener">PDF</a><a class="chip" href="https://doi.org/10.3390/s23167057" target="_blank" rel="noopener">Sensors</a></div>
+            </div>
+            <div class="pub">
+              <h3><a href="https://doi.org/10.2337/db23-119-LB" target="_blank" rel="noopener">Preliminary Accuracy Analysis of a Noninvasive Optical Glucose Sensing Prototype</a></h3>
+              <p class="authors">Luke Geiser, <span class="me">Ho Man Colman Leung</span>, Cari Berget, Chengyue Gong, Qiang Liu, Xia Zhou, Gregory P. Forlenza</p>
+              <p class="venue" title="Diabetes 72 (Supplement 1): 119-LB (2023)">Diabetes 2023 · Abstract presented at ADA 2023</p>
+              <div class="chips"><a class="chip" href="https://doi.org/10.2337/db23-119-LB" target="_blank" rel="noopener">Diabetes Journal</a></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="when">2022</div>
+        <div class="what reveal">
+          <div class="pub">
+            <h3><a href="./doc/2022-glucose-paper.pdf" target="_blank" rel="noopener">A Portable Solution to Noninvasive Glucose Sensing with Light</a></h3>
+            <p class="authors"><span class="me">Ho Man Colman Leung</span>, Tianxing Li, Temiloluwa Prioleau, Tam Vu, Gregory Forlenza, Xia Zhou</p>
+            <p class="venue" title="Adjunct Proceedings of ACM UbiComp/ISWC 2022">UbiComp 2022 · Poster</p>
+            <div class="chips"><a class="chip" href="./doc/2022-glucose-paper.pdf" target="_blank" rel="noopener">PDF</a><a class="chip" href="./doc/2022-glucose-poster.pdf" target="_blank" rel="noopener">Poster</a><a class="chip" href="https://dl.acm.org/doi/abs/10.1145/3544793.3560341" target="_blank" rel="noopener">ACM</a></div>
+          </div>
+        </div>
+
+        <div class="when">2018</div>
+        <div class="what reveal">
+          <div class="pub">
+            <h3><a href="./doc/2018-twistin-paper.pdf" target="_blank" rel="noopener">TwistIn: Tangible Authentication of Smart Devices via Motion Co-analysis with a Smartwatch</a></h3>
+            <p class="authors"><span class="me">Ho Man Colman Leung</span>, Chi-Wing Fu, Pheng-Ann Heng</p>
+            <p class="venue" title="Proceedings of the ACM on Interactive, Mobile, Wearable and Ubiquitous Technologies (IMWUT) 2(2), 2018">IMWUT 2018 · Presented at UbiComp 2018</p>
+            <div class="chips"><a class="chip" href="./doc/2018-twistin-paper.pdf" target="_blank" rel="noopener">PDF</a><a class="chip" href="./doc/2018-twistin-slides.pdf" target="_blank" rel="noopener">Slides</a><a class="chip" href="./doc/2018-twistin-poster.pdf" target="_blank" rel="noopener">Poster</a><a class="chip" href="https://dl.acm.org/citation.cfm?id=3214275" target="_blank" rel="noopener">ACM</a></div>
+          </div>
+        </div>
+
+        <div class="when">2016</div>
+        <div class="what reveal">
+          <div class="pub">
+            <h3><a href="./doc/2016-stereo-paper.pdf" target="_blank" rel="noopener">Stereoscopic Three-Dimensional Visualization for Immersive and Intuitive Anatomy Learning</a></h3>
+            <p class="authors">Kup-Sze Choi, Shu-Ting Chan, <span class="me">Ho Man Colman Leung</span>, Yim-Pan Chui</p>
+            <p class="venue" title="IEEE International Conference on Technology for Education (T4E), 2016">T4E 2016</p>
+            <div class="chips"><a class="chip" href="./doc/2016-stereo-paper.pdf" target="_blank" rel="noopener">PDF</a><a class="chip" href="https://ieeexplore.ieee.org/document/7814821/" target="_blank" rel="noopener">IEEE</a></div>
+          </div>
+        </div>
+      </div>
     </div>
-    <!-- .container-fluid -->
-</section>
-<!-- .section-research -->
-<section class="section-wrapper section-education">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="section-title"><h2>Education</h2></div>
-            </div>
+  </section>
+
+  <section class="block" id="experience">
+    <div class="wrap">
+      <div class="block-head"><h2>Experience</h2></div>
+      <div class="rail">
+        <div class="when now"><span>2020</span><span>– present</span></div>
+        <div class="what entry reveal">
+          <h3>PhD Researcher, Mobile X Lab</h3>
+          <p class="org">Columbia University · Dartmouth College</p>
+          <p>Design custom sensors and circuit boards, build signal-processing and ML pipelines, and run human-subject studies from lab pilots to a 363-day home deployment (see <a href="#research">Research</a>).</p>
         </div>
-        <!--.row-->
-        <div class="row">
-            <div class="col-md-12">
-				<div class="content-item">
-					<small>2020 - May 2027 (expected)</small>
-					<h3>Ph.D. in Computer Science</h3>
-					<h4>Columbia University</h4>
-					<p>Advisor: <a href="https://www.cs.columbia.edu/~xia/" target="_blank">Prof. Xia Zhou</a><br />
-					Began at Dartmouth College (2020 - 2022) and transferred to Columbia with my advisor's lab.</p>
-				</div>
-                <div class="content-item">
-                    <small>2015 - 2018</small>
-                    <h3>M.Phil. in Computer Science</h3>
-                    <h4>The Chinese University of Hong Kong</h4>
-					<p>Supervisors: <a href="http://www.cse.cuhk.edu.hk/~cwfu" target="_blank">Prof. Chi-Wing Fu</a>, <a href="http://www.cse.cuhk.edu.hk/~pheng" target="_blank">Prof. Pheng-Ann Heng</a><br /><a href="./doc/colman-leung-thesis.pdf" target="_blank">Thesis</a></p>
-                </div>
-                <!-- .experience-item -->
-                <div class="content-item">
-                    <small>2009 - 2012</small>
-                    <h3>B.Sc. in Computer Science</h3>
-                    <h4>The Chinese University of Hong Kong</h4>
-                </div>
-                <!-- .experience-item -->
-            </div>
+
+        <div class="when"><span>2018</span><span>– 2020</span></div>
+        <div class="what entry reveal">
+          <h3>Research Associate</h3>
+          <p class="org">Department of Computer Science and Engineering, The Chinese University of Hong Kong</p>
+          <p>Built a robust multi-camera, multi-object 6DoF real-time tracking system for medical simulators, accelerated to over 60 fps with CUDA parallelization and pipelined execution.</p>
         </div>
-        <!--.row-->
+
+        <div class="when"><span>2015</span><span>– 2018</span></div>
+        <div class="what entry reveal">
+          <h3>MPhil Researcher</h3>
+          <p class="org">Department of Computer Science and Engineering, The Chinese University of Hong Kong</p>
+          <p>Created TwistIn, which authenticates a smart device by matching its twist to the user's smartwatch motion (IMWUT 2018).</p>
+        </div>
+
+        <div class="when"><span>2012</span><span>– 2015</span></div>
+        <div class="what entry reveal">
+          <h3>Software Engineer</h3>
+          <p class="org">Dracaena Life Technologies Co., Ltd., Hong Kong</p>
+          <p>Built medical training simulators: <button class="linkish" type="button" data-open="project-va">VR-Anatomy</button>, a stereoscopic 3D anatomy tool deployed at the PolyU School of Nursing (<a href="https://ieeexplore.ieee.org/document/7814821/" target="_blank" rel="noopener">paper</a>), plus a <button class="linkish" type="button" data-open="project-acusim">Virtual Acupuncture</button> trainer and an <button class="linkish" type="button" data-open="project-iss">Interventional Sonography</button> trainer.</p>
+        </div>
+      </div>
     </div>
-    <!-- .container-fluid -->
+  </section>
 
-</section>
-<!-- .section-education -->
-<!-- .section-experience -->
-
-
-<section class="section-wrapper section-publications gray-bg">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="section-title"><h2>Publications</h2></div>
-            </div>
+  <section class="block" id="education">
+    <div class="wrap">
+      <div class="block-head"><h2>Education</h2></div>
+      <div class="rail">
+        <div class="when now"><span>2020</span><span>– 2027</span></div>
+        <div class="what entry reveal">
+          <h3>PhD in Computer Science</h3>
+          <p class="org">Columbia University · expected May 2027</p>
+          <p>Advisor: <a href="https://www.cs.columbia.edu/~xia/" target="_blank" rel="noopener">Prof. Xia Zhou</a>. Began at Dartmouth College (2020 – 2022) and moved to Columbia with the lab.</p>
         </div>
-        <!-- .row -->
-        <div class="row">
-            <div class="col-md-12">
-                <div class="content-item">
-                    <h3>Continuous Electrocardiogram Monitoring with a Loose T-Shirt</h3>
-                    <p><u>Ho Man Colman Leung</u>, Kyle Tong, Ming Gong, Nam Bui, Xia Zhou<br />
-					Hot Topics in Mobile and Wireless Systems for Health (MobiDx '26). ACM, 2026. <br />Presented in MobiDx 2026, Austin, TX.<br />
-					<div class="pub-badges">
-						<a href="https://doi.org/10.1145/3842657.3842785" target="_blank">ACM</a>
-						<a href="./doc/2026-tshirt-paper.pdf" target="_blank">Paper</a>
-					</div>
-					</p>
-                </div>
-            </div>
+        <div class="when"><span>2015</span><span>– 2018</span></div>
+        <div class="what entry reveal">
+          <h3>MPhil in Computer Science and Engineering</h3>
+          <p class="org">The Chinese University of Hong Kong</p>
+          <p>Advisors: Prof. Chi-Wing Fu and Prof. Pheng-Ann Heng · <a href="./doc/colman-leung-thesis.pdf" target="_blank" rel="noopener">Thesis</a></p>
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="content-item">
-                    <h3>Clinical evaluation of a polarization-based optical noninvasive glucose sensing system</h3>
-                    <p><u>Ho Man Colman Leung</u>, Chengyue Gong, Luke Geiser, Emily E Fivekiller, Nam Bui, Tam Vu, Temiloluwa Prioleau, Gregory P Forlenza, Qiang Liu, Xia Zhou<br />
-					Scientific Reports 15.1 (2025): 8877.<br />
-					<div class="pub-badges">
-						<a href="https://doi.org/10.1038/s41598-025-92515-6" target="_blank">Sci Rep</a>
-						<a href="./doc/2025-clinical-paper.pdf" target="_blank">Paper</a>
-					</div>
-					</p>
-                </div>
-            </div>
+        <div class="when"><span>2009</span><span>– 2012</span></div>
+        <div class="what entry reveal">
+          <h3>BSc in Computer Science</h3>
+          <p class="org">The Chinese University of Hong Kong</p>
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="content-item">
-                    <h3>My Pillow Knows My Sleep: Sleep Monitoring with Computational Fabrics in the Pillowcase</h3>
-                    <p>Qijia Shao, Junxiao Chen, <u>Ho Man Colman Leung</u>, Meiqi Zhao, Ruoyu Xu, Jiting Liu, Lisa Maria DiSalvo García, Xiaofan Jiang, Marie-Pierre St-Onge, Xia Zhou<br />
-					Proceedings of the ACM on Interactive, Mobile, Wearable and Ubiquitous Technologies 9.3 (2025): 1-26.<br />
-					<div class="pub-badges">
-						<a href="https://doi.org/10.1145/3749550" target="_blank">ACM</a>
-						<a href="./doc/2025-pillow-paper.pdf" target="_blank">Paper</a>
-					</div>
-					</p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="content-item">
-                    <h3>Fabric Sensing of Intrinsic Hand Muscle Activity</h3>
-                    <p>Katelyn Lee, Runsheng Wang, Ava Chen, Lauren Winterbottom, <u>Ho Man Colman Leung</u>, Lisa Maria DiSalvo, Iris Xu, Jingxi Xu, Dawn M Nilsen, Joel Stein, Xia Zhou, Matei Ciocarlie<br />
-					2025 International Conference On Rehabilitation Robotics (ICORR). IEEE, 2025.<br />
-					<div class="pub-badges">
-						<a href="https://doi.org/10.1109/ICORR66766.2025.11062938" target="_blank">IEEE</a>
-						<a href="./doc/2025-fabric-paper.pdf" target="_blank">Paper</a>
-					</div>
-					</p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="content-item">
-                    <h3>Joey: supporting kangaroo mother care with computational fabrics</h3>
-                    <p>Qijia Shao, Jiting Liu, Emily Bejerano, <u>Ho Man Colman Leung</u>, Jingping Nie, Xiaofan Jiang, Xia Zhou<br />
-					Proceedings of the 22nd Annual International Conference on Mobile Systems, Applications and Services. 2024.<br />
-					<div class="pub-badges">
-						<a href="https://doi.org/10.1145/3643832.3661867" target="_blank">ACM</a>
-						<a href="./doc/2024-joey-paper.pdf" target="_blank">Paper</a>
-					</div>
-					</p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="content-item">
-                    <h3>Noninvasive glucose sensing in vivo</h3>
-                    <p><u>Ho Man Colman Leung</u>, Gregory P Forlenza, Temiloluwa O Prioleau, Xia Zhou<br />
-					Sensors 23.16 (2023): 7057.<br />
-					<div class="pub-badges">
-						<a href="https://doi.org/10.3390/s23167057" target="_blank">Sensors</a>
-						<a href="./doc/2023-review-paper.pdf" target="_blank">Paper</a>
-					</div>
-					</p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="content-item">
-                    <h3>Preliminary Accuracy Analysis of a Noninvasive Optical Glucose Sensing Prototype</h3>
-                    <p>Luke Geiser, <u>Ho Man Colman Leung</u>, Cari Berget, Chengyue Gong, Qiang Liu, Xia Zhou, Gregory P Forlenza<br />
-					Diabetes 72.Supplement_1 (2023): 119-LB. <br />Presented in ADA 2023. 
-					<div class="pub-badges">
-						<a href="https://doi.org/10.2337/db23-119-LB" target="_blank">Diabetes Journal</a>
-					</div>
-					</p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="content-item">
-                    <h3>A Portable Solution to Noninvasive Glucose Sensing with Light</h3>
-                    <p><u>Ho Man Colman Leung</u>, Tianxing Li, Temiloluwa Prioleau, Tam Vu, Gregory Forlenza, Xia Zhou<br />
-					Adjunct Proceedings of the 2022 ACM International Joint Conference on Pervasive and Ubiquitous Computing and the 2022 ACM International Symposium on Wearable Computers. 2022. <br />Presented in UBICOMP 2022. 
-					<div class="pub-badges">
-						<a href="https://dl.acm.org/doi/abs/10.1145/3544793.3560341" target="_blank">ACM</a>
-						<a href="./doc/2022-glucose-paper.pdf" target="_blank">Paper</a>
-						<a href="./doc/2022-glucose-poster.pdf" target="_blank">Poster</a>
-					</div>
-					</p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="content-item">
-                    <h3>TwistIn: Tangible Authentication of Smart Devices via Motion Co-analysis with a Smartwatch</h3>
-                    <p><u>Ho Man Colman Leung</u>, Chi-Wing Fu, and Pheng-Ann Heng<br />
-					Proceedings of the ACM on Interactive, Mobile, Wearable and Ubiquitous Technologies 2.2 (2018): 72. <br />Presented in UBICOMP 2018. 
-					<div class="pub-badges">
-						<a href="https://dl.acm.org/citation.cfm?id=3214275" target="_blank">ACM</a>
-						<a href="./doc/2018-twistin-paper.pdf" target="_blank">Paper</a>
-						<a href="./doc/2018-twistin-slides.pdf" target="_blank">Slides</a>
-						<a href="./doc/2018-twistin-poster.pdf" target="_blank">Poster</a>
-					</div>
-					</p>
-                </div>
-            </div>
-        </div>
-		<div class="row">
-            <div class="col-md-12">
-                <div class="content-item">
-                    <h3>Stereoscopic Three-Dimensional Visualization for Immersive and Intuitive Anatomy Learning</h3>
-                    <p>Kup-Sze Choi, Shu-Ting Chan, <u>Ho Man Colman Leung</u>, and Yim-Pan Chui<br />
-					IEEE International Conference on Technology for Education (T4E 2016). 
-					<div class="pub-badges">
-						<a href="https://ieeexplore.ieee.org/document/7814821/" target="_blank">IEEE</a>
-						<a href="./doc/2016-stereo-paper.pdf" target="_blank">Paper</a>
-					</div>
-					</p>
-                </div>
-            </div>
-        </div>
-        <!-- .row -->
+      </div>
     </div>
-</section>
-<!-- .section-publications -->
-<section class="section-wrapper section-experience gray-bg">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="section-title"><h2>Experience</h2></div>
-            </div>
+  </section>
+
+  <section class="block" id="teaching">
+    <div class="wrap">
+      <div class="block-head"><h2>Teaching &amp; Service</h2></div>
+      <div class="two-up">
+        <div class="reveal">
+          <h3>Teaching &amp; Mentoring</h3>
+          <ul class="plain">
+            <li><div class="t">Teaching Assistant, Computer Networks</div><div class="s">Columbia University (CSEE4119) and Dartmouth College (CS60)</div><div class="d">2021 – 2025</div></li>
+            <li><div class="t">Research Mentor, Mobile X Lab</div><div class="s">Co-mentored 4 undergraduate students on lab research projects, Columbia University</div></li>
+            <li><div class="t">Teaching Assistant and Project Tutor</div><div class="s">Computer Graphics, Java and final-year projects, The Chinese University of Hong Kong · Certificate of Merit</div><div class="d">2015 – 2017</div></li>
+          </ul>
         </div>
-        <!--.row-->
-        <div class="row">
-            <div class="col-md-12">
-                <div class="content-item">
-					<small>2020 - Present</small>
-					<h3>PhD Researcher, Mobile X Lab</h3>
-					<h4>Columbia University &bull; Dartmouth College</h4>
-					<ul>
-					<li><b>Continuous ECG Monitoring with a Loose T-Shirt</b> (MobiDx 2026): Built a loose T-shirt that records ECG, a form factor long considered unusable due to motion artifacts, using a sweat-anchored kirigami sensor and a hybrid electrode that also captures motion to adaptively filter the ECG. Achieved 92.7% full-waveform detection at rest and 84.5% R-peak detection while walking, and participants preferred the shirt over commercial ECG patches and chest straps.</li>
-					<li><b>Noninvasive Optical Glucose Sensing</b> (Scientific Reports 2025, Sensors 2023): Designed a portable sensor that estimates glucose levels from the rotation of polarized light, and led a 363-day home study of 30 participants with the Barbara Davis Center for Diabetes, with over 95% of predictions clinically accurate or acceptable.</li>
-					<li><b>Computational Fabrics</b> (IMWUT 2025, ICORR 2025, MobiSys 2024): Developed the Joey Android app, including integrating an OpenBCI dongle with the smartphone, built the sleep-sensing pillowcase prototype, and advised on a fabric hand-muscle sensor for rehabilitation.</li>
-					</ul>
-					<p>Co-mentored 4 undergraduate and master's students on lab research projects.</p>
-
-					<small>2018 - 2020</small>
-					<h3>Research Associate</h3>
-					<h4>Department of Computer Science and Engineering, The Chinese University of Hong Kong</h4>
-					<p>Developed a robust multi-camera, multi-object 6DoF real-time tracking system for medical simulators, with performance boosted through CUDA parallelization and pipelined execution. </p>
-
-					<small>2015 - 2018</small>
-					<h3>MPhil Researcher</h3>
-					<h4>Department of Computer Science and Engineering, The Chinese University of Hong Kong</h4>
-					<p>Created TwistIn, which authenticates a smart device by matching its twist to the user's smartwatch motion (IMWUT 2018).</p>
-
-                    <small>2012 - 2015</small>
-                    <h3>Software Engineer</h3>
-                    <h4>Dracaena Life Technologies Co., Ltd., Hong Kong</h4>
-                    <ul>
-					<li>
-					<div class="item-wrap"><h4><a href="#project-va">VR-Anatomy</a></h4></div>
-					Designed an anatomy visualization tool with stereoscopic 3D and Leap Motion mid-air gestures for immersive learning; deployed at PolyU School of Nursing with positive user study results (<a href="https://ieeexplore.ieee.org/document/7814821/" target="_blank">link</a>).
-				    </li>
-					<li><div class="item-wrap"><h4><a href="#project-acusim">Virtual Acupuncture</a></h4></div>
-					Developed a Traditional Chinese Acupuncture Simulation System by extending an Interventional Sonography Trainer, adding rotary encoders and Arduino-based sensors to capture needle rotation.
-					</li>
-					<li><div class="item-wrap"><h4><a href="#project-iss">Interventional Sonography Training System</a></h4></div>
-					Implemented stereoscopic rendering and head tracking 3D simulation using Kinect.
-					</li>
-					</ul>
-					<!--<small>2014</small>
-					<h3>Android App Developer</h3>
-                    <h4>MCScanner - A Side Project</h4>
-					<ul>
-					<ul>
-					<li>
-					Developed <a href="https://play.google.com/store/apps/details?id=com.canlemon.mcscanner" target="_blank">MCScanner</a>, an android app which can scan multiple-choice papers and generate spreadsheets to speed up grading process for teachers. Scanned images were processed with OpenCV library which was called through JNI. 
-					</li>
-					-->
-                </div>
-            </div>
+        <div class="reveal">
+          <h3>Service &amp; Outreach</h3>
+          <ul class="plain">
+            <li><div class="t">Co-organizer &amp; Technical Instructor, <a href="https://www.instagram.com/youth.fab/" target="_blank" rel="noopener">You(th)Fab</a></div><div class="s">Co-organized a <a href="https://archleague.org/competition/2025-independent-projects-grant-recipients/" target="_blank" rel="noopener">NYSCA-funded</a> program teaching high school students digital fabrication, and taught CAD for 3D printing and laser cutting.</div><div class="d">Summer 2026</div></li>
+            <li><div class="t">Volunteer Mentor, <a href="https://www.cs.columbia.edu/cscu-phd-par-program/" target="_blank" rel="noopener">Columbia PhD Application Support</a></div><div class="s">Gave feedback on personal statements and CVs for prospective PhD applicants.</div><div class="d">2023 – 2025</div></li>
+            <li><div class="t">Reviewer</div><div class="s">ACM IMWUT, ACM MobiSys</div></li>
+          </ul>
         </div>
-        <!--.row-->
+      </div>
     </div>
-    <!-- .container-fluid -->
-</section>
+  </section>
 
-<section class="section-wrapper section-experience gray-bg">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="section-title"><h2>Service & Outreach</h2></div>
-            </div>
-        </div>
-        <!--.row-->
-        <div class="row">
-            <div class="col-md-12">
-                <div class="content-item">
-					<b>Co-organizer & Technical Instructor</b>, <a href="https://www.instagram.com/youth.fab/" target="_blank">You(th)Fab</a> &bull; Summer 2026
-					<ul>
-					<li>
-						Co-organized a <a href="https://archleague.org/competition/2025-independent-projects-grant-recipients/" target="_blank">NYSCA-funded</a> initiative teaching digital fabrication to high school students.
-					</li>
-					<li>
-						Taught CAD for 3D printing and laser cutting.<br />
-					</li>
-					</ul>
-					<b>Volunteer Mentor</b>, <a href="https://www.cs.columbia.edu/cscu-phd-par-program/" target="_blank">Columbia PhD Application Support (PAR)</a> &bull; 2023 - 2025
-					<ul>
-					<li>
-						Gave feedback on personal statements and CVs for prospective PhD applicants to Columbia University.<br />
-					</li>
-					</ul>
-					<b>Technical Reviewer</b>, ACM IMWUT, ACM MobiSys
-				</div>
-            </div>
-        </div>
-        <!--.row-->
+  <section class="block" id="skills">
+    <div class="wrap">
+      <div class="block-head"><h2>Skills</h2></div>
+      <dl class="skills reveal">
+        <dt>Hardware</dt><dd>Sensor design and characterization, e-textiles, PCB design (KiCad, EasyEDA), MCUs (STM32, ESP32, Arduino), SMD soldering, CAD (Fusion, SolidWorks), 3D printing</dd>
+        <dt>Data &amp; ML</dt><dd>Biosignal processing, motion-artifact filtering, time-series ML (PyTorch, scikit-learn, SciPy), OpenCV</dd>
+        <dt>Study Design</dt><dd>Human-subject studies, from lab pilots to multi-month home deployments</dd>
+        <dt>Programming</dt><dd>Python, C/C++, C#, Java, MATLAB, CUDA, OpenGL, Unity, Android, iOS, Git, Linux</dd>
+        <dt>Design</dt><dd>Adobe Photoshop, Illustrator, InDesign, Premiere Pro, After Effects</dd>
+        <dt>Languages</dt><dd>Cantonese (native), English (fluent), Mandarin, Spanish (beginner)</dd>
+      </dl>
     </div>
-    <!-- .container-fluid -->
-</section>
-
-<section class="section-wrapper section-interest gray-bg">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="section-title"><h2>Teaching</h2></div>
-            </div>
-        </div>
-        <!-- .row -->
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="content-item">
-					<p>
-					<h3>Columbia University</h3>
-					<p>CSEE4119 - Computer Networks, Teaching Assistant • Spring 2024 & Spring 2025</p>
-					<h3>Dartmouth College</h3>
-					<p>CS 60 - Computer Networks, Teaching Assistant • Spring 2021</p>
-					<h3>The Chinese University of Hong Kong</h3>
-					<p>Final Year Project Tutor • Fall 2016 - Spring 2017<br />
-					CSCI3260 - Principle of Computer Graphics, Teaching Assistant (Certificate of Merit) • Spring 2016<br />
-					CSCI1130 - Introduction to Computing using Java, Teaching Assistant • Fall 2015</p>
-				</p>
-                </div>
-            </div>
-        </div>
-        <!-- .row -->
+  </section>
+  <section class="block" id="outside">
+    <div class="wrap">
+      <div class="block-head"><h2>Outside the Lab</h2></div>
+      <p class="lede">Dragon boat with <a href="https://www.instagram.com/852speedboat/" target="_blank" rel="noopener">852 Speedboat</a> in New York and <a href="https://www.instagram.com/woofdragonhk/" target="_blank" rel="noopener">Woof Dragon</a> in Hong Kong, badminton, piano, cello and graphic design. I love designing things, from posters, logos, booklets and yearbooks for school and university groups to the occasional freelance project.</p>
+      <button class="disclosure" type="button" id="pf-toggle" aria-expanded="false" aria-controls="portfolio">
+        <span>Design portfolio</span><span class="count">7 projects</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+      <div class="gallery" id="portfolio" hidden>
+        <button class="tile" type="button" data-open="design-cudb"><img src="img/portfolio-web/design-cudb--icon.jpg" alt="" loading="lazy"><span class="tile-t">Team Recruitment Poster</span><span class="tile-s">University Dragon Boat Team · 2017</span></button>
+        <button class="tile" type="button" data-open="design-spring"><img src="img/portfolio-web/design-spring--icon.jpg" alt="" loading="lazy"><span class="tile-t">Asia Food Expo</span><span class="tile-s">Freelance project · 2014</span></button>
+        <button class="tile" type="button" data-open="design-kcco45"><img src="img/portfolio-web/design-kcco45--icon.jpg" alt="" loading="lazy"><span class="tile-t">Concert Booklet</span><span class="tile-s">King's College Chinese Orchestra · 2013</span></button>
+        <button class="tile" type="button" data-open="design-gradbk"><img src="img/portfolio-web/design-gradbk--icon.jpg" alt="" loading="lazy"><span class="tile-t">Graduate Yearbook Cover</span><span class="tile-s">Chung Chi College · 2012</span></button>
+        <button class="tile" type="button" data-open="design-cc60"><img src="img/portfolio-web/design-cc60--icon.jpg" alt="" loading="lazy"><span class="tile-t">60th Anniversary Identity</span><span class="tile-s">Chung Chi College · 2011</span></button>
+        <button class="tile" type="button" data-open="design-carnival"><img src="img/portfolio-web/design-carnival--icon.jpg" alt="" loading="lazy"><span class="tile-t">59th Carnival</span><span class="tile-s">Chung Chi College · 2010</span></button>
+        <button class="tile" type="button" data-open="design-figtree"><img src="img/portfolio-web/design-figtree--icon.jpg" alt="" loading="lazy"><span class="tile-t">The Fig Tree Yearbook</span><span class="tile-s">King's College · 2008</span></button>
+      </div>
     </div>
-</section>
+  </section>
+</main>
 
-<section class="section-wrapper skills-wrapper">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="section-title">
-                    <h2>Skills</h2>
-                </div>
-            </div>
-
-        </div>
-
-		<div class="row">
-            <div class="col-md-12">
-                <div class="content-item">
-					<b>Hardware</b><br />
-					<p>Sensor design and characterization, PCB design (KiCad, EasyEDA), SMD soldering, embedded systems (STM32, ESP32, Arduino), CAD (Autodesk Fusion, SolidWorks), 3D printing, e-textiles and embroidery</p>
-					<b>Data & Machine Learning</b><br />
-					<p>Biosignal processing, motion-artifact filtering, time-series ML (PyTorch, TensorFlow, scikit-learn, NumPy, SciPy), OpenCV</p>
-					<b>Study Design</b><br />
-					<p>Human-subject studies, from lab pilots to multi-month home deployments</p>
-					<b>Programming</b><br />
-					<p>Python, C/C++, C#, Java, Objective-C, MATLAB, GLSL, CUDA, OpenGL, Unity, iOS, Android, Git, Linux</p>
-					<b>Digital Design</b><br />
-					<p>Adobe Creative Suite (Photoshop, Illustrator, InDesign, Premiere Pro, After Effects)</p>
-					<b>Spoken Languages</b><br />
-					<p>Cantonese (native), English (fluent), Mandarin, Spanish (beginner)</p>
-                </div>
-            </div>
-        </div>
-        <!--.row -->
+<dialog class="lightbox" id="lightbox" aria-labelledby="lb-title">
+  <div class="lb-inner">
+    <button class="lb-close" type="button" aria-label="Close">×</button>
+    <div class="lb-stage">
+      <img id="lb-img" alt="">
+      <button class="lb-nav lb-prev" type="button" aria-label="Previous image">‹</button>
+      <button class="lb-nav lb-next" type="button" aria-label="Next image">›</button>
     </div>
-    <!-- .container-fluid -->
-</section>
-<!-- .skills-wrapper -->
-
-
-<section class="section-wrapper section-interest gray-bg">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="section-title"><h2>Interests</h2></div>
-            </div>
-        </div>
-        <!-- .row -->
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="content-item">
-                    <p>
-					<b>Sports</b> - Badminton, Dragon Boat (NYC: <a href="https://www.instagram.com/852speedboat/" target="_blank">852 Speedboat</a>, HK: <a href="https://www.instagram.com/woofdragonhk/" target="_blank">Woof Dragon</a>)<br /> 
-					<b>Music</b> - Piano, Cello<br />
-					<b>Arts</b> - Graphic Design <a href="#" id="read-more-btn">[view portfolio]</a><br />
-					</p>
-                </div>
-            </div>
-        </div>
-		<!--(Paddler and Steerer in the <a href="http://www.facebook.com/CUHK.DBC" target="_blank">University Dragon Boat Team</a>)-->
-        <!-- .row -->
+    <div class="lb-caption">
+      <div class="lb-head"><h3 id="lb-title"></h3><span class="lb-count" id="lb-count"></span></div>
+      <p class="lb-meta" id="lb-meta"></p>
+      <p id="lb-desc"></p>
     </div>
-</section>
+  </div>
+</dialog>
 
-
-<section class="section-wrapper portfolio-section content-toggle" id="more-content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="section-title">
-                    <h2>Designs</h2>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-		<div class="col-xs-6 col-md-4 item-wrap">
-			<a class="portfolio-item" href="#design-cudb">
-				<div class="portfolio-thumb">
-					<img src="img/portfolio/design-cudb/icon.png" alt="">
-				</div>
-
-				<div class="portfolio-info">
-					<h3>Team Recruitment Poster</h3>
-					<small>University Dragon Boat Team</small>
-				</div>
-			</a>
-		</div>
-		<!--<div class="col-xs-6 col-md-4 item-wrap">
-			<a class="portfolio-item" href="#design-law">
-				<div class="portfolio-thumb">
-					<img src="img/portfolio/design-law/icon.png" alt="">
-				</div>
-
-				<div class="portfolio-info">
-					<h3>Trafalgar Law</h3>
-					<small>One Piece Character</small>
-				</div>
-			</a>
-		</div>-->
-		<div class="col-xs-6 col-md-4 item-wrap">
-			<a class="portfolio-item" href="#design-spring">
-				<div class="portfolio-thumb">
-					<img src="img/portfolio/design-spring/icon.png" alt="">
-				</div>
-
-				<div class="portfolio-info">
-					<h3>Asia Food Expo</h3>
-					<small>A Freelance Project</small>
-				</div>
-			</a>
-		</div>
-		<div class="col-xs-6 col-md-4 item-wrap">
-			<a class="portfolio-item" href="#design-kcco45">
-				<div class="portfolio-thumb">
-					<img src="img/portfolio/design-kcco45/icon.png" alt="">
-				</div>
-
-				<div class="portfolio-info">
-					<h3>Concert Booklet Typesetting</h3>
-					<small>King's College Chinese Orchestra</small>
-				</div>
-			</a>
-		</div>
-		<div class="col-xs-6 col-md-4 item-wrap">
-			<a class="portfolio-item" href="#design-gradbk">
-				<div class="portfolio-thumb">
-					<img src="img/portfolio/design-gradbk/icon.png" alt="">
-				</div>
-
-				<div class="portfolio-info">
-					<h3>Book Cover Design</h3>
-					<small>2012 Class Society</small>
-				</div>
-			</a>
-		</div>
-		<div class="col-xs-6 col-md-4 item-wrap">
-			<a class="portfolio-item" href="#design-cc60">
-				<div class="portfolio-thumb">
-					<img src="img/portfolio/design-cc60/icon.png" alt="">
-				</div>
-
-				<div class="portfolio-info">
-					<h3>60th Anniversary</h3>
-					<small>Chung Chi College</small>
-				</div>
-			</a>
-		</div>
-		<div class="col-xs-6 col-md-4 item-wrap">
-			<a class="portfolio-item" href="#design-carnival">
-				<div class="portfolio-thumb">
-					<img src="img/portfolio/design-carnival/icon.png" alt="">
-				</div>
-
-				<div class="portfolio-info">
-					<h3>59th Carnival</h3>
-					<small>Chung Chi College</small>
-				</div>
-			</a>
-		</div>
-		<div class="col-xs-6 col-md-4 item-wrap">
-			<a class="portfolio-item" href="#design-figtree">
-				<div class="portfolio-thumb">
-					<img src="img/portfolio/design-figtree/icon.png" alt="">
-				</div>
-
-				<div class="portfolio-info">
-					<h3>Book Cover Design</h3>
-					<small>The Fig Tree</small>
-				</div>
-			</a>
-		</div>
-
-        </div>
-        <!-- /.row -->
+<footer>
+  <div class="wrap foot">
+    <div>
+      <p class="meta">© 2026 Ho Man Colman Leung · Last updated <span id="updated">Oct 2026</span></p>
     </div>
-</section>
-
-
-<div id="project-va" class="popup-modal mfp-hide">
-
-	  <img class="scale-with-grid" data-src="img/portfolio/project-va/main.gif" alt="" />
-
-	  <div class="description-box">
-		  <h4>VR-Anatomy</h4>
-		  <p>
-		  I designed the system architecture and developed the anatomy visualizer for educational purposes. The system is equipped with stereoscopic 3D visualization that provides an immersive learning environment inside a lecture theatre. It also features mid-air gestures using Leap Motion for interactive navigation.</p>
-		  <p>
-		  The system is deployed in <a href="http://vap.fhss.polyu.edu.hk/sav.html" target="_blank">Faculty of Health and Social Sciences in The Hong Kong Polytechnic University</a> which is used to teach nursing students. A <a href="https://ieeexplore.ieee.org/document/7814821/" target="_blank">user study</a> was conducted showing positive feedback from the users.
-		  </p>
-	   <span class="categories"><i class="fa fa-tag"></i>Anatomy Exploration Tool</span>
-	  </div>
-
-	<div class="link-box">
-	<a href="https://ieeexplore.ieee.org/document/7814821/" class="popup-modal-link" target="_blank">User Study</a>
-		 <a class="popup-modal-dismiss">Close</a>
-	</div>
-
-</div><!-- modal-01 End -->
-<div id="project-iss" class="popup-modal mfp-hide">
-
-	  <img class="scale-with-grid" data-src="img/portfolio/project-iss/main.jpg" alt="" />
-
-	  <div class="description-box">
-		  <h4>iSonoSim</h4>
-		  <p>
-		  This is the first project I worked on in Dracaena LifeTech. It is a medical simulator which provides training to novice doctors by simulating ultrasound images. I developed automation tools for testing the system's integrity and extended the system to simulate X-Ray images and MRI images. I also implemented stereoscopic 3D rendering using nVidia 3D Vision and 3D simulation using head tracking with Kinect.
-		  </p>
-	   <span class="categories"><i class="fa fa-tag"></i>Training Simulator</span>
-	  </div>
-
-	<div class="link-box">
-	<a href="http://www.dracaena-lifetech.com/iSonoSim.html" class="popup-modal-link" target="_blank">Learn more</a>
-		 <a class="popup-modal-dismiss">Close</a>
-	</div>
-
-</div><!-- modal-02 End -->
-<div id="project-acusim" class="popup-modal mfp-hide">
-
-	  <img class="scale-with-grid" data-src="img/portfolio/project-acusim/main.jpg" alt="" />
-
-	  <div class="description-box">
-		  <h4>Virtual Acupuncture</h4>
-		  <p>
-		  This acupuncture simulator was developed base on Interventional Sonography Training System. Since acupuncturists perform various manipulations including twisting the needle to achieve a "deqi" response, we installed a rotary encoder at the needle and connected it to an arduino microcontroller to measure the needle's rotation.
-		  </p>
-	   <span class="categories"><i class="fa fa-tag"></i>Training Simulator</span>
-	  </div>
-
-	<div class="link-box">
-	<a href="http://www.dracaena-lifetech.com/acuSim.html" class="popup-modal-link" target="_blank">Learn more</a>
-		 <a class="popup-modal-dismiss">Close</a>
-	</div>
-
-</div>
-
-
-<div id="design-cudb" class="popup-modal mfp-hide">
-		<ul class="rslides scale-with-grid">
-		<li><img data-src="img/portfolio/design-cudb/1.png" alt=""></li>
-		<li><img data-src="img/portfolio/design-cudb/2.png" alt=""></li>
-		</ul>
-	  <div class="description-box">
-		  <h4>University Dragon Boat Team Recruitment Poster</h4>
-		  <h5>2017</h5>
-		  <p>
-		  This is a poster I designed for the team recruitment. The poster features a high-resolution photo of our team, where the crew is highlighted.
-		  </p>
-	   <span class="categories"><i class="fa fa-tag"></i>Design</span>
-	  </div>
-
-	<div class="link-box">
-		 <a class="popup-modal-dismiss">Close</a>
-	</div>
-</div>
-
-<!--<div id="design-law" class="popup-modal mfp-hide">
-		<img data-src="img/portfolio/design-law/1.png" alt="">
-		<div class="description-box">
-		  <h4>Trafalgar Law with Yellow Umbrella</h4>
-		  <h5>2014</h5>
-		  <p>
-		  I drew one of my favourite character Law from One Piece.
-		  </p>
-		<span class="categories"><i class="fa fa-tag"></i>Design</span>
-		</div>
-
-	<div class="link-box">
-		 <a class="popup-modal-dismiss">Close</a>
-	</div>
-</div>-->
-
-<div id="design-spring" class="popup-modal mfp-hide">
-		<ul class="rslides scale-with-grid">
-		<li><img data-src="img/portfolio/design-spring/1.png" alt=""></li>
-		<li><img data-src="img/portfolio/design-spring/2.png" alt=""></li>
-		<li><img data-src="img/portfolio/design-spring/3.png" alt=""></li>
-		<li><img data-src="img/portfolio/design-spring/4.png" alt=""></li>
-		<li><img data-src="img/portfolio/design-spring/5.png" alt=""></li>
-		</ul>
-		<div class="description-box">
-		  <h4>Asia Food Expo</h4>
-		  <h5>2014</h5>
-		  <p>
-		  This is a freelance project which I designed for Asia Food Expo (Spring). I decided to use pink as the theme color as it corresponds to the sakura flower that blossoms in spring.
-		  </p>
-		<span class="categories"><i class="fa fa-tag"></i>Design</span>
-		</div>
-
-	<div class="link-box">
-		 <a class="popup-modal-dismiss">Close</a>
-	</div>
-</div>
-
-<div id="design-kcco45" class="popup-modal mfp-hide">
-		<ul class="rslides scale-with-grid">
-		<li><img data-src="img/portfolio/design-kcco45/1.png" alt=""></li>
-		<li><img data-src="img/portfolio/design-kcco45/2.png" alt=""></li>
-		<li><img data-src="img/portfolio/design-kcco45/3.png" alt=""></li>
-		<li><img data-src="img/portfolio/design-kcco45/4.png" alt=""></li>
-		<li><img data-src="img/portfolio/design-kcco45/5.png" alt=""></li>
-		<li><img data-src="img/portfolio/design-kcco45/6.png" alt=""></li>
-		<li><img data-src="img/portfolio/design-kcco45/7.png" alt=""></li>
-		</ul>
-		<div class="description-box">
-		  <h4>King's College Chinese Orchestra 45th Anniversary Concert</h4>
-		  <h5>2013</h5>
-		  <p>
-		  The booklet of the King's College Chinese Orchestra 45th Anniversary Concert is typeset by me. Shown above are some of the pages inside the 40-page booklet.
-		  </p>
-		<span class="categories"><i class="fa fa-tag"></i>Design</span>
-		</div>
-
-	<div class="link-box">
-		 <a class="popup-modal-dismiss">Close</a>
-	</div>
-</div>
-
-<div id="design-gradbk" class="popup-modal mfp-hide">
-		<ul class="rslides scale-with-grid">
-		<li><img data-src="img/portfolio/design-gradbk/1.png" alt=""></li>
-		<li><img data-src="img/portfolio/design-gradbk/2.png" alt=""></li>
-		<li><img data-src="img/portfolio/design-gradbk/3.png" alt=""></li>
-		</ul>
-		<div class="description-box">
-		  <h4>2012 Graduate Yearbook</h4>
-		  <h5>2012</h5>
-		  <p>
-		  I designed the cover of my college's 2012 graduate yearbook. Hidden inside is the Chinese characters "崇基" which is the Chinese name of Chung Chi College. While I prefer the Blue-Silver version, the Red-Gold version is used instead.
-		  </p>
-		<span class="categories"><i class="fa fa-tag"></i>Design</span>
-		</div>
-
-	<div class="link-box">
-		 <a class="popup-modal-dismiss">Close</a>
-	</div>
-</div>
-
-<div id="design-cc60" class="popup-modal mfp-hide">
-	<ul class="rslides scale-with-grid">
-	<li><img data-src="img/portfolio/design-cc60/1.png" alt=""></li>
-	<li><img data-src="img/portfolio/design-cc60/2.png" alt=""></li>
-	<li><img data-src="img/portfolio/design-cc60/3.png" alt=""></li>
-	<li><img data-src="img/portfolio/design-cc60/4.png" alt=""></li>
-	<li><img data-src="img/portfolio/design-cc60/5.png" alt=""></li>
-	<li><img data-src="img/portfolio/design-cc60/6.png" alt=""></li>
-	</ul>
-	  <div class="description-box">
-		  <h4>Chung Chi College 60th Anniversary Celebration</h4>
-		  <h5>2011</h5>
-		  <p>
-		  I lead the Publish and Design Team and designed the logo, which is the chinese character of "dream". I also designed a computer wallpaper and a set of postcards. Three selected postcards are displayed above.
-		  </p>
-	   <span class="categories"><i class="fa fa-tag"></i>Design</span>
-	  </div>
-
-	<div class="link-box">
-		 <a class="popup-modal-dismiss">Close</a>
-	</div>
-</div>
-
-<div id="design-carnival" class="popup-modal mfp-hide">
-	<ul class="rslides scale-with-grid">
-	<li><img data-src="img/portfolio/design-carnival/1.png" alt=""></li>
-	<li><img data-src="img/portfolio/design-carnival/2.png" alt=""></li>
-	<li><img data-src="img/portfolio/design-carnival/3.png" alt=""></li>
-	</ul>
-	  <div class="description-box">
-		  <h4>Chung Chi College 59th Carnival</h4>
-		  <h5>2010</h5>
-		  <p>
-		  I designed the logos, posters, and banners to promote the Carnival with over a hundred stalls and live music shows. The theme of the carnival is "market", and so elements that can be found inside a market such as meats, fruits, and vegetables can be seen inside the design.
-		  </p>
-	   <span class="categories"><i class="fa fa-tag"></i>Design</span>
-	  </div>
-
-	<div class="link-box">
-		 <a class="popup-modal-dismiss">Close</a>
-	</div>
-</div>
-
-<div id="design-figtree" class="popup-modal mfp-hide">
-		<img data-src="img/portfolio/design-figtree/1.png" alt="">
-		<div class="description-box">
-		  <h4>The Fig Tree</h4>
-		  <h5>2008</h5>
-		  <p>
-		  The Fig Tree is the name of the yearbook of my secondary school featuring photos taken inside the campus.
-		  </p>
-		<span class="categories"><i class="fa fa-tag"></i>Design</span>
-		</div>
-
-	<div class="link-box">
-		 <a class="popup-modal-dismiss">Close</a>
-	</div>
-</div>
-
-<footer class="footer">
-    <div class="copyright-section">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="copytext">
-					<!-- adding map widget with smaller width -->
-					<div class="widget">
-					<script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=pKEjTZHvsuKpPobxEa6lnOmGf2iJ_301xjmbrzFI-pA&cl=ffffff&w=a"></script>
-					</div>
-					Last updated: 
-					<script language="javascript"> 
-					// showing and formatting last modified date
-					d = new Date(document.lastModified); // get last modified date
-					m = d.getMonth(); // retrieve month
-					mn = (1==m)?'FEB':(2==m)?'MAR':(3==m)?'APR':(4==m)?'MAY':(5==m)?'JUN':(6==m)?'JUL':(7==m)?'AUG':(8==m)?'SEP':(9==m)?'OCT':(10==m)?'NOV':(11==m)?'DEC':'JAN'; // showing JAN otherwise
-					document.write(mn+"-"+d.getDate()+"-"+d.getFullYear()); // formatting
-					</script>
-					| Designed by Colman | Based on Resumex by <a href="https://themehippo.com" target="_blank">themehippo</a>
-					</div>
-                </div>
-            </div>
-            <!--.row-->
-        </div>
-        <!-- .container-fluid -->
-    </div>
-    <!-- .copyright-section -->
+    <div class="visitors"><p class="meta">Visitors</p><script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=pKEjTZHvsuKpPobxEa6lnOmGf2iJ_301xjmbrzFI-pA&cl=ffffff&w=a"></script></div>
+  </div>
 </footer>
-<!-- .footer -->
-</div>
-<!-- Sticky -->
-</div>
-<!-- .right-col-block -->
-</div>
-<!-- .columns-block -->
-</div>
-<!-- #main-wrapper -->
 
-<!-- jquery -->
-<script src="js/jquery-2.1.4.min.js"></script>
-<script src="js/responsiveslides.min.js"></script>
-<!-- Bootstrap -->
-<script src="js/bootstrap.min.js"></script>
-<script src="js/theia-sticky-sidebar.js"></script>
-<script src="js/magnific-popup.js"></script>
-<script src="js/scripts.js"></script>
+<script>
+(function () {
+  var root = document.documentElement;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce) root.classList.add('motion');
+
+  // Theme: follows the system until the visitor picks one with the toggle.
+  var mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  var btn = document.getElementById('theme-toggle');
+  function saved() { try { return localStorage.getItem('theme'); } catch (e) { return null; } }
+  function effective() {
+    var t = root.getAttribute('data-theme');
+    if (t === 'dark' || t === 'light') return t;
+    return mq && mq.matches ? 'dark' : 'light';
+  }
+  function sync() {
+    var dark = effective() === 'dark';
+    root.classList.toggle('is-dark', dark);
+    btn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+  }
+  var s0 = saved(); if (s0 === 'dark' || s0 === 'light') root.setAttribute('data-theme', s0);
+  sync();
+  if (mq && mq.addEventListener) mq.addEventListener('change', sync);
+  new MutationObserver(sync).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+  btn.addEventListener('click', function () {
+    var next = effective() === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+  });
+
+  // Design portfolio opens on demand.
+  var pfBtn = document.getElementById('pf-toggle'), pf = document.getElementById('portfolio');
+  pfBtn.addEventListener('click', function () {
+    var open = pf.hidden;
+    pf.hidden = !open;
+    pfBtn.setAttribute('aria-expanded', String(open));
+  });
+
+  // Header gets a hairline once the page scrolls.
+  var nav = document.querySelector('.nav');
+  function onScroll() { nav.classList.toggle('scrolled', window.scrollY > 8); }
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Highlight the section in view.
+  var links = {};
+  document.querySelectorAll('.nav-links a').forEach(function (a) { links[a.getAttribute('href').slice(1)] = a; });
+  if ('IntersectionObserver' in window) {
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting && links[e.target.id]) {
+          Object.keys(links).forEach(function (k) { links[k].removeAttribute('aria-current'); });
+          links[e.target.id].setAttribute('aria-current', 'true');
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    document.querySelectorAll('section.block').forEach(function (s) { spy.observe(s); });
+
+    // Gentle rise for content that starts out of view. Everything stays visible at rest.
+    if (!reduce) {
+      var seen = new WeakSet();
+      var rise = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          var el = e.target;
+          if (!seen.has(el)) {
+            seen.add(el);
+            if (e.isIntersecting) { rise.unobserve(el); return; }   // already on screen: leave as is
+            el.classList.add('waiting');
+            return;
+          }
+          if (e.isIntersecting) { el.classList.add('in'); rise.unobserve(el); }
+        });
+      }, { rootMargin: '0px 0px -8% 0px' });
+      document.querySelectorAll('.reveal').forEach(function (el) { rise.observe(el); });
+    }
+  }
+
+  // Section dividers: as each one scrolls up the screen, a dot travels left to right
+  // along it and a short stretch of ECG trails behind the dot, then fades back to the plain line.
+  if (!reduce) (function () {
+    var NS = 'http://www.w3.org/2000/svg', BASE = 24, TAIL = 170, PERIOD = 150;
+    var BEAT = [[0,0],[10,0],[14,-3],[18,0],[26,0],[28,2],[31,-16],[34,6],[37,0],[48,0],[56,-5],[64,0]];
+    function yAt(x) {
+      var t = ((x - 40) % PERIOD + PERIOD) % PERIOD;
+      if (x < 40) return BASE;
+      for (var k = 1; k < BEAT.length; k++) {
+        if (t <= BEAT[k][0]) {
+          var a = BEAT[k - 1], b = BEAT[k], f = (t - a[0]) / (b[0] - a[0] || 1);
+          return BASE + a[1] + (b[1] - a[1]) * f;
+        }
+      }
+      return BASE;
+    }
+    var lines = [];
+    document.querySelectorAll('section.block').forEach(function (sec, n) {
+      if (n === 0) return;
+      var svg = document.createElementNS(NS, 'svg');
+      svg.setAttribute('class', 'beat-line'); svg.setAttribute('aria-hidden', 'true');
+      var id = 'bl' + n;
+      svg.innerHTML =
+        '<defs><linearGradient id="' + id + 'g" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff"/></linearGradient>' +
+        '<mask id="' + id + 'm" maskUnits="userSpaceOnUse"><rect height="40" fill="url(#' + id + 'g)"/></mask></defs>' +
+        '<path class="tr" mask="url(#' + id + 'm)"/><circle class="dot" r="3"/>';
+      sec.insertBefore(svg, sec.firstChild);
+      lines.push({ svg: svg, path: svg.querySelector('.tr'), dot: svg.querySelector('.dot'),
+        grad: svg.querySelector('linearGradient'), rect: svg.querySelector('mask rect'), w: 0 });
+    });
+    function build(L) {
+      var w = Math.round(L.svg.getBoundingClientRect().width); if (!w || w === L.w) return;
+      L.w = w; L.svg.setAttribute('viewBox', '0 0 ' + w + ' 40');
+      var d = 'M0 ' + BASE;
+      for (var x = 40; x < w; x += PERIOD) {
+        for (var k = 1; k < BEAT.length; k++) {
+          var px = x + BEAT[k][0]; if (px > w) break;
+          d += 'L' + px + ' ' + (BASE + BEAT[k][1]);
+        }
+      }
+      L.path.setAttribute('d', d + 'L' + w + ' ' + BASE);
+    }
+    function update() {
+      var vh = window.innerHeight;
+      lines.forEach(function (L) {
+        build(L);
+        var top = L.svg.getBoundingClientRect().top + BASE;
+        var p = (vh - top) / (vh * 0.7);            // 0 when the line enters at the bottom, 1 near the top
+        var op = Math.max(0, Math.min(1, p / 0.06, (1 - p) / 0.1));
+        L.svg.style.opacity = op;
+        if (op <= 0) return;
+        var x = Math.max(0, Math.min(L.w, p * L.w));
+        L.dot.setAttribute('cx', x); L.dot.setAttribute('cy', yAt(x));
+        L.grad.setAttribute('x1', x - TAIL); L.grad.setAttribute('x2', x);
+        L.rect.setAttribute('x', x - TAIL); L.rect.setAttribute('width', TAIL);
+      });
+    }
+    var queued = false;
+    function onFrame() { queued = false; update(); }
+    function request() { if (!queued) { queued = true; requestAnimationFrame(onFrame); } }
+    window.addEventListener('scroll', request, { passive: true });
+    window.addEventListener('resize', function () { lines.forEach(function (L) { L.w = 0; }); request(); });
+    update();
+  })();
+
+  // Lightbox for the design portfolio and early projects.
+  var ITEMS = {"design-cudb": {"title": "University Dragon Boat Team Recruitment Poster", "meta": "Poster · 2017", "desc": "A recruitment poster for the university dragon boat team, built around a high-resolution photo of the crew in action.", "images": ["img/portfolio-web/design-cudb--1.jpg", "img/portfolio-web/design-cudb--2.jpg"]}, "design-spring": {"title": "Asia Food Expo (Spring)", "meta": "Freelance · 2014", "desc": "Event branding for a spring food expo. Pink is the theme color, after the sakura that blossoms in spring.", "images": ["img/portfolio-web/design-spring--1.jpg", "img/portfolio-web/design-spring--2.jpg", "img/portfolio-web/design-spring--3.jpg", "img/portfolio-web/design-spring--4.jpg", "img/portfolio-web/design-spring--5.jpg"]}, "design-kcco45": {"title": "King's College Chinese Orchestra 45th Anniversary Concert", "meta": "Booklet typesetting · 2013", "desc": "I typeset the 40-page concert booklet. These are some of its pages.", "images": ["img/portfolio-web/design-kcco45--1.jpg", "img/portfolio-web/design-kcco45--2.jpg", "img/portfolio-web/design-kcco45--3.jpg", "img/portfolio-web/design-kcco45--4.jpg", "img/portfolio-web/design-kcco45--5.jpg", "img/portfolio-web/design-kcco45--6.jpg", "img/portfolio-web/design-kcco45--7.jpg"]}, "design-gradbk": {"title": "2012 Graduate Yearbook", "meta": "Cover design · 2012", "desc": "Cover for my college’s 2012 graduate yearbook, with the Chinese name of Chung Chi College, 崇基, hidden in the pattern. I prefer the blue-silver version, but the red-gold one was used.", "images": ["img/portfolio-web/design-gradbk--1.jpg", "img/portfolio-web/design-gradbk--2.jpg", "img/portfolio-web/design-gradbk--3.jpg"]}, "design-cc60": {"title": "Chung Chi College 60th Anniversary", "meta": "Identity · 2011", "desc": "I led the publishing and design team and designed the logo, based on the Chinese character for “dream”, plus a desktop wallpaper and a set of postcards.", "images": ["img/portfolio-web/design-cc60--1.jpg", "img/portfolio-web/design-cc60--2.jpg", "img/portfolio-web/design-cc60--3.jpg", "img/portfolio-web/design-cc60--4.jpg", "img/portfolio-web/design-cc60--5.jpg", "img/portfolio-web/design-cc60--6.jpg"]}, "design-carnival": {"title": "Chung Chi College 59th Carnival", "meta": "Logos, posters and banners · 2010", "desc": "Promotion for a carnival with over a hundred stalls and live music. The theme was “market”, so the designs use meat, fruit and vegetables.", "images": ["img/portfolio-web/design-carnival--1.jpg", "img/portfolio-web/design-carnival--2.jpg", "img/portfolio-web/design-carnival--3.jpg"]}, "design-figtree": {"title": "The Fig Tree", "meta": "Yearbook cover · 2008", "desc": "Cover of my secondary school’s yearbook, featuring photos taken on campus.", "images": ["img/portfolio-web/design-figtree--1.jpg"]}, "project-va": {"title": "VR-Anatomy", "meta": "Anatomy exploration tool · Dracaena Life Technologies", "desc": "I designed the system architecture and built the anatomy visualizer: stereoscopic 3D for an immersive lecture-theatre experience, with Leap Motion mid-air gestures for navigation. It was deployed in the Faculty of Health and Social Sciences at The Hong Kong Polytechnic University to teach nursing students, and a <a href=\"https://ieeexplore.ieee.org/document/7814821/\" target=\"_blank\" rel=\"noopener\">user study</a> showed positive feedback.", "images": ["img/portfolio/project-va/main.gif"]}, "project-iss": {"title": "iSonoSim", "meta": "Training simulator · Dracaena Life Technologies", "desc": "A medical simulator that trains novice doctors with simulated ultrasound images. I built automated tests, extended it to simulate X-ray and MRI images, and implemented stereoscopic rendering with nVidia 3D Vision and head-tracked 3D with Kinect.", "images": ["img/portfolio-web/project-iss--main.jpg"]}, "project-acusim": {"title": "Virtual Acupuncture", "meta": "Training simulator · Dracaena Life Technologies", "desc": "An acupuncture simulator built on the interventional sonography trainer. Acupuncturists twist the needle to achieve a “deqi” response, so we added a rotary encoder to the needle and read its rotation with an Arduino.", "images": ["img/portfolio-web/project-acusim--main.jpg"]}};
+  var dlg = document.getElementById('lightbox');
+  var lbImg = document.getElementById('lb-img'), cur = null, idx = 0;
+  function show() {
+    var it = ITEMS[cur];
+    lbImg.src = it.images[idx];
+    lbImg.alt = it.title + ', image ' + (idx + 1) + ' of ' + it.images.length;
+    document.getElementById('lb-count').textContent = it.images.length > 1 ? (idx + 1) + ' / ' + it.images.length : '';
+    var multi = it.images.length > 1;
+    dlg.querySelector('.lb-prev').hidden = !multi;
+    dlg.querySelector('.lb-next').hidden = !multi;
+  }
+  function open(key) {
+    var it = ITEMS[key]; if (!it) return;
+    cur = key; idx = 0;
+    document.getElementById('lb-title').textContent = it.title;
+    document.getElementById('lb-meta').textContent = it.meta;
+    document.getElementById('lb-desc').innerHTML = it.desc;
+    show();
+    if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
+  }
+  function step(d) { var n = ITEMS[cur].images.length; idx = (idx + d + n) % n; show(); }
+  document.querySelectorAll('[data-open]').forEach(function (b) {
+    b.addEventListener('click', function () { open(b.getAttribute('data-open')); });
+  });
+  dlg.querySelector('.lb-prev').addEventListener('click', function () { step(-1); });
+  dlg.querySelector('.lb-next').addEventListener('click', function () { step(1); });
+  dlg.querySelector('.lb-close').addEventListener('click', function () { dlg.close(); });
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+  dlg.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') step(1);
+    if (e.key === 'ArrowLeft') step(-1);
+  });
+
+  // Last updated date from the page itself.
+  var d = new Date(document.lastModified);
+  if (!isNaN(d)) document.getElementById('updated').textContent =
+    d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+})();
+</script>
 </body>
 </html>
