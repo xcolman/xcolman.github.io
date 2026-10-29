@@ -225,9 +225,10 @@ section.block:first-of-type::before { display: none; }
 .motion .reveal.waiting.in { opacity: 1; animation: rise .6s cubic-bezier(.2, .7, .2, 1) both; }
 
 /* Research cards */
-.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+/* One research card per row, picture on the left (phones put it on top). */
+.cards { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
 .card {
-  display: flex; flex-direction: column;
+  display: flex; flex-direction: row;
   background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden;
   transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
 }
@@ -249,8 +250,8 @@ section.block:first-of-type::before { display: none; }
 }
 @keyframes sew-b { from { clip-path: inset(0 0 0 100%); } to { clip-path: inset(0 0 0 0); } }
 .card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--accent) 25%, var(--line)); }
-.card-media { background: var(--media-bg); height: 120px; padding: 8px 0; border-bottom: 1px solid var(--line); overflow: hidden; }
-.card-media img { width: 100%; height: 100%; object-fit: contain; display: block; mix-blend-mode: var(--media-blend); transition: transform .5s ease; }
+.card-media { flex: 0 0 236px; background: var(--media-bg); padding: 16px 18px; border-right: 1px solid var(--line); overflow: hidden; display: flex; align-items: center; }
+.card-media img { width: 100%; height: auto; max-height: 180px; object-fit: contain; display: block; mix-blend-mode: var(--media-blend); transition: transform .5s ease; }
 .card:hover .card-media img { transform: scale(1.03); }
 .card-body { display: flex; flex-direction: column; gap: 8px; padding: 18px 20px 20px; flex: 1; }
 .card h3 { font-size: 19px; font-weight: 600; line-height: 1.25; letter-spacing: -.005em; }
@@ -265,6 +266,13 @@ section.block:first-of-type::before { display: none; }
   display: block; font: 500 11.5px/1.6 var(--font-mono); letter-spacing: .04em; text-transform: uppercase; color: var(--muted);
 }
 .card .chips { margin-top: auto; padding-top: 8px; }
+/* One line per paper: a short label, then its PDF and its publisher page (DOI). */
+.card .links { margin-top: auto; padding-top: 10px; display: flex; flex-wrap: wrap; gap: 10px 16px; }
+.card .links .chip { padding: 6px 9px; }
+/* Each paper is its own little column (label over its two links), split by a thin rule. */
+.paper-links + .paper-links { border-left: 1px solid var(--line); padding-left: 16px; }
+.paper-links { display: grid; grid-template-columns: repeat(2, auto); justify-content: start; align-items: center; gap: 6px 5px; }
+.paper-links .pl { font: 500 12px/1 var(--font-mono); letter-spacing: .02em; color: var(--muted); grid-column: 1 / -1; }
 
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .chip {
@@ -411,12 +419,19 @@ footer { border-top: 1px solid var(--line); padding-block: 36px 48px; }
 .vm-placeholder { width: 100%; height: 210px; border: 1px dashed var(--line); border-radius: 10px; display: grid; place-items: center; text-align: center; padding: 12px; font-size: 13px; color: var(--faint); }
 
 /* ---------- Responsive ---------- */
-@media (max-width: 900px) {
-  .cards { grid-template-columns: minmax(0, 1fr); }
-  .card { flex-direction: row; }
-  .card-media { flex: 0 0 30%; height: auto; border-bottom: 0; border-right: 1px solid var(--line); }
+/* Medium windows keep three research cards side by side; only phones stack them. */
+@media (max-width: 960px) {
+  .card-media { flex-basis: 210px; }
+  .nav .wrap { gap: 12px; }
+  .nav-links a { padding: 6px 7px; font-size: 14px; }
+}
+/* Too narrow for all five section links: keep just the theme toggle and Resume. */
+@media (max-width: 820px) {
+  .nav-links { display: none; }
+  .theme-toggle { margin-left: auto; }
 }
 @media (max-width: 720px) {
+  .cards { grid-template-columns: minmax(0, 1fr); gap: 18px; }
   .nav-links { display: none; }
   .theme-toggle { margin-left: auto; }
   .hero { padding-block: 32px 4px; }
@@ -428,7 +443,10 @@ footer { border-top: 1px solid var(--line); padding-block: 36px 48px; }
   .hero .role { font-size: 16px; margin-top: 8px; }
   .eyebrow { margin-bottom: 6px; }
   .card { flex-direction: column; }
-  .card-media { flex: none; height: 115px; border-right: 0; border-bottom: 1px solid var(--line); }
+  .card-media { flex: none; padding: 10px 0; border-right: 0; border-bottom: 1px solid var(--line); justify-content: center; }
+  .card-media img { width: 80%; height: auto; max-height: none; }
+  .card .links { display: grid; gap: 12px; }
+  .paper-links + .paper-links { border-left: 0; padding-left: 0; }
   .rail { padding-left: 26px; }
   .rail > .when::before, .rail > .when.now::after { left: -26px; }
   .two-up { grid-template-columns: minmax(0, 1fr); gap: 16px; }
@@ -505,9 +523,8 @@ footer { border-top: 1px solid var(--line); padding-block: 36px 48px; }
             <p class="venue">MobiDx 2026 · MobiCom workshop</p>
             <p>Loose clothing was long considered unusable for ECG because the fabric moves with the body. The shirt's own weight and a little sweat hold a thin kirigami sensor to the back, and a hybrid electrode senses motion so it can be filtered out.</p>
             <p class="result">92.7% of full waveforms at rest · 84.5% of heartbeats while walking</p>
-            <div class="chips">
-              <a class="chip" href="./doc/2026-tshirt-paper.pdf" target="_blank" rel="noopener">PDF · Paper</a>
-              <a class="chip" href="https://doi.org/10.1145/3842657.3842785" target="_blank" rel="noopener">ACM</a>
+            <div class="links">
+              <div class="paper-links"><span class="pl">Paper</span><a class="chip" href="./doc/2026-tshirt-paper.pdf" target="_blank" rel="noopener">PDF</a><a class="chip" href="https://doi.org/10.1145/3842657.3842785" target="_blank" rel="noopener">ACM</a></div>
             </div>
           </div>
         </article>
@@ -518,10 +535,10 @@ footer { border-top: 1px solid var(--line); padding-block: 36px 48px; }
             <p class="venue">Scientific Reports 2025 · Sensors 2023 · UbiComp 2022</p>
             <p>A portable box that estimates glucose levels from how the palm rotates polarized light, with a light trap that rejects stray reflections. Tested in a 363-day home study with 30 participants, run with the Barbara Davis Center for Diabetes.</p>
             <p class="result">Over 95% of predictions clinically accurate or acceptable</p>
-            <div class="chips">
-              <a class="chip" href="./doc/2025-clinical-paper.pdf" target="_blank" rel="noopener">PDF · Clinical Study</a>
-              <a class="chip" href="./doc/2023-review-paper.pdf" target="_blank" rel="noopener">PDF · Review</a>
-              <a class="chip" href="./doc/2022-glucose-paper.pdf" target="_blank" rel="noopener">PDF · Poster Paper</a>
+            <div class="links">
+              <div class="paper-links"><span class="pl">Clinical Study</span><a class="chip" href="./doc/2025-clinical-paper.pdf" target="_blank" rel="noopener">PDF</a><a class="chip" href="https://doi.org/10.1038/s41598-025-92515-6" target="_blank" rel="noopener">Sci Rep</a></div>
+              <div class="paper-links"><span class="pl">Review</span><a class="chip" href="./doc/2023-review-paper.pdf" target="_blank" rel="noopener">PDF</a><a class="chip" href="https://doi.org/10.3390/s23167057" target="_blank" rel="noopener">Sensors</a></div>
+              <div class="paper-links"><span class="pl">Poster Paper</span><a class="chip" href="./doc/2022-glucose-paper.pdf" target="_blank" rel="noopener">PDF</a><a class="chip" href="https://doi.org/10.1145/3544793.3560341" target="_blank" rel="noopener">ACM</a></div>
             </div>
           </div>
         </article>
@@ -532,10 +549,10 @@ footer { border-top: 1px solid var(--line); padding-block: 36px 48px; }
             <p class="venue">IMWUT 2025 · MobiSys 2024 · ICORR 2025</p>
             <p>Sensors made from conductive fabric and built into everyday textiles: a pillowcase that tracks heart rate, breathing and sleep posture, Joey for kangaroo mother care of newborns, and a fabric sensor for hand-muscle rehabilitation.</p>
             <p class="result"><span class="lbl">My role</span> Built the pillow's sensing prototype, developed Joey's Android app, advised on the hand-muscle sensors</p>
-            <div class="chips">
-              <a class="chip" href="./doc/2025-pillow-paper.pdf" target="_blank" rel="noopener">PDF · Pillow</a>
-              <a class="chip" href="./doc/2024-joey-paper.pdf" target="_blank" rel="noopener">PDF · Joey</a>
-              <a class="chip" href="./doc/2025-fabric-paper.pdf" target="_blank" rel="noopener">PDF · Hand Muscle</a>
+            <div class="links">
+              <div class="paper-links"><span class="pl">Pillow</span><a class="chip" href="./doc/2025-pillow-paper.pdf" target="_blank" rel="noopener">PDF</a><a class="chip" href="https://doi.org/10.1145/3749550" target="_blank" rel="noopener">ACM</a></div>
+              <div class="paper-links"><span class="pl">Joey</span><a class="chip" href="./doc/2024-joey-paper.pdf" target="_blank" rel="noopener">PDF</a><a class="chip" href="https://doi.org/10.1145/3643832.3661867" target="_blank" rel="noopener">ACM</a></div>
+              <div class="paper-links"><span class="pl">Hand Muscle</span><a class="chip" href="./doc/2025-fabric-paper.pdf" target="_blank" rel="noopener">PDF</a><a class="chip" href="https://doi.org/10.1109/ICORR66766.2025.11062938" target="_blank" rel="noopener">IEEE</a></div>
             </div>
           </div>
         </article>
